@@ -15,3 +15,7 @@ jobs:
           packages: >
             latex latex-bin scheme-basic koma-script luatexbase luatex
       - run: lualatex gitgame
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifacts@v4
+        with:
+          path: gitgame.pdf
