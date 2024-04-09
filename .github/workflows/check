@@ -1,0 +1,17 @@
+name: check
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: check
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Install/Update Tex Live
+        uses: zauguin/install-texlive@v3
+        with:
+          packages: >
+            latex latex-bin scheme-basic koma-script luatexbase luatex
+      - run: lualatex gitgame
