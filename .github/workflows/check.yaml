@@ -19,3 +19,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: gitgame.pdf
+          compression-level: 0 # no compression
