@@ -2,6 +2,9 @@ name: check
 
 on: [push]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,4 +22,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: gitgame.pdf
-          compression-level: 0 # no compression
+      - name: Prepare build directory
+        run: |
+          mkdir build
+          cp gitgame.pdf build/
+      - name: Upload to GitHub-pages
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: gh-pages
+          build_dir: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
