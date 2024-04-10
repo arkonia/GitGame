@@ -16,7 +16,7 @@ jobs:
         uses: zauguin/install-texlive@v3
         with:
           packages: >
-            latex latex-bin scheme-basic koma-script luatexbase luatex texlive-full
+            latex latex-bin scheme-basic koma-script luatexbase luatex
       - run: lualatex gitgame
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
