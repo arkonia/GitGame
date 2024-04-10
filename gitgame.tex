@@ -1,8 +1,14 @@
 \documentclass{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
 
-%\usepackage[british, main=ngerman]{babel}
+\usepackage[british, main=ngerman]{babel}
+\usepackage{tikz}
 
 \begin{document}
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
+
+\begin{tikzpicture}
+  \draw (0,0) rectangle (60mm,90mm);
+  \node[circle, radius=15mm] at (35mm,45mm) {Test};
+\end{tikzpicture}
 \end{document}
