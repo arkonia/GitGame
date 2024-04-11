@@ -28,7 +28,12 @@
 }
 \newcommand\CardFrontNumbered[1]{%
   \begin{CardFront}
-    \node[draw, line width=1.5pt, fill=blue!30, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont #1};
+    \ifnum#1<8
+      \definecolor{numcolor}{rgb}{0.5,1,1}
+    \else
+      \definecolor{numcolor}{rgb}{0.5,1,0.5}
+    \fi
+    \node[draw, line width=1.5pt, fill=numcolor, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont #1};
   \end{CardFront}%
 }
 
@@ -38,5 +43,8 @@ Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 \CardFrontNumbered{1}%
 \CardFrontNumbered{2}%
 \CardFrontNumbered{3}%
-\CardFrontNumbered{4}%
+
+\CardFrontNumbered{10}%
+\CardFrontNumbered{12}%
+\CardFrontNumbered{15}%
 \end{document}
