@@ -1,4 +1,4 @@
-\documentclass[DIV15]{scrartcl}
+\documentclass[DIV=12]{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
 
 \usepackage[british, main=ngerman]{babel}
@@ -8,6 +8,9 @@
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
 
+\usepackage{fontspec}
+\setmainfont{Linux Libertine O}
+\setsansfont[Numbers=OldStyle]{Linux Biolinum O}
 \newcommand\bigfont[1]{{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
 
 \newdimen\cardwidth
@@ -36,19 +39,45 @@
       \auxnum=#1
       \multiply\auxnum by 12
       \colorlet{numcolor}{middlecolor!\the\auxnum!nullcolor}
-%      \def\eight{fill=white}
+      \def\eight{white}
+      \auxnum=#1
     \else
       \auxnum=#1
       \advance\auxnum by -8
       \multiply\auxnum by 12
       \colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}
-%      \def\eight{fill=black}
+      \def\eight{black}
+      \auxnum=#1
+      \advance\auxnum by -8
     \fi
-    \node[draw, line width=1.5pt, fill=numcolor, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont{#1}};
-    \path (Center)++(-0.21*\cardwidth,-0.35*\cardwidth) circle[draw, radius=3mm];
-    \path (Center)++(-0.07*\cardwidth,-0.35*\cardwidth) circle[draw,fill=white, radius=3mm];
-    \path (Center)++(+0.07*\cardwidth,-0.35*\cardwidth) circle[draw,fill=black, radius=3mm];
-    \path (Center)++(+0.21*\cardwidth,-0.35*\cardwidth) circle[draw, radius=3mm];
+    \draw[line width=1.5pt, fill=numcolor] (Center) circle[radius=0.25*\cardwidth];
+    \path (Center)+(0,0.025\cardwidth) node[anchor=center] {\bigfont{#1}};
+    
+    \ifnum\auxnum<4
+    	\def\four{white}
+    \else
+    	\def\four{black}
+    	\advance\auxnum by -4
+    \fi
+    \ifnum\auxnum<2
+		\def\two{white}
+	\else
+		\def\two{black}
+		\advance\auxnum by -2
+	\fi
+    \ifnum\auxnum<1
+		\def\one{white}
+	\else
+		\def\one{black}
+	\fi
+    \path (Center)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
+    \draw[fill=\eight] (aux) circle[radius=1mm];
+    \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+	\draw[fill=\four] (aux) circle[radius=1mm];
+    \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+	\draw[fill=\two] (aux) circle[radius=1mm];
+    \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+	\draw[fill=\one] (aux) circle[radius=1mm];
   \end{CardFront}%
 }
 
