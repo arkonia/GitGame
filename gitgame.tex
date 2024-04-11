@@ -1,8 +1,11 @@
-\documentclass{scrartcl}
+\documentclass[DIV15]{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
 
 \usepackage[british, main=ngerman]{babel}
 \usepackage{tikz}
+
+\renewcommand{\familydefault}{\sfdefault}
+\newcommand\bigfont[1]{{\fontsize{40}{48}\bfseries\selectfont #1}}
 
 \newdimen\cardwidth
 \cardwidth=60mm
@@ -18,17 +21,17 @@
     \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
     \fill[green!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
 }{
-  \end{tikzpicture}
+  \end{tikzpicture}%
 }
 \newcommand\CardFrontNumbered[1]{%
   \begin{CardFront}
-    \node[draw, fill=blue!30, circle, anchor=center] at (Center) {\Huge #1};
+    \node[draw, fill=blue!30, circle, anchor=center] at (Center) {\bigfont #1};
   \end{CardFront}
 }
 
 \begin{document}
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
-\CardFrontNumbered{1}
-\CardFrontNumbered{2}
+\CardFrontNumbered{1}%
+\CardFrontNumbered{2}%
 \end{document}
