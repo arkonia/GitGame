@@ -8,7 +8,7 @@
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
 
-\newcommand\bigfont[1]{{\fontsize{40}{48}\sffamily\bfseries\selectfont #1}}
+\newcommand\bigfont[1]{{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
 
 \newdimen\cardwidth
 \cardwidth=60mm
@@ -17,6 +17,7 @@
 \newdimen\cardborder
 \cardborder=5mm
 
+\newcount\auxnum
 \newenvironment{CardFront}{%
   \begin{tikzpicture}
     \draw[rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
@@ -29,11 +30,16 @@
 \newcommand\CardFrontNumbered[1]{%
   \begin{CardFront}
     \ifnum#1<8
-      \definecolor{numcolor}{rgb}{0.5,1,1}
+      \auxnum=#1
+      \multiply\auxnum by 12
+      \colorlet{numcolor}{green!\the\auxnum!yellow}
     \else
-      \definecolor{numcolor}{rgb}{0.5,1,0.5}
+      \auxnum=#1
+      \advance\auxnum by -8
+      \multiply\auxnum by 12
+      \colorlet{numcolor}{blue!\the\auxnum!green}
     \fi
-    \node[draw, line width=1.5pt, fill=numcolor, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont #1};
+    \node[draw, line width=1.5pt, fill=numcolor, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont{#1}};
   \end{CardFront}%
 }
 
