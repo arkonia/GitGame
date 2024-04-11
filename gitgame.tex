@@ -4,12 +4,31 @@
 \usepackage[british, main=ngerman]{babel}
 \usepackage{tikz}
 
+\newdimen\cardwidth
+\cardwidth=60mm
+\newdimen\cardheight
+\cardheicht=90mm
+\newdimen\cardborder
+\cardborder=5mm
+
+\newenvironment{CardFront}{%
+  \begin{tikzpicture}
+    \draw[rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+    \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
+    \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
+    \fill[green!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+}{
+  \end{tikzpicture}
+}
+\newcommand\CardFrontNumbered[1]{%
+  \begin{CardFront}
+    \node[draw, fill=blue!30, circle, anchor=center] at (Center) {\Huge #1};
+  \end{CardFront}
+}
+
 \begin{document}
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
-\begin{tikzpicture}
-  \draw[rounded corners=5mm] (0,0) rectangle (60mm,90mm);
-  \fill[green!20, rounded corners=5mm] (5mm,5mm) rectangle (55mm,85mm);
-  \node[draw, circle, radius=15mm, anchor=center] at (30mm,45mm) {Test};
-\end{tikzpicture}
+\CardFrontNumbered{1}
+\CardFrontNumbered{2}
 \end{document}
