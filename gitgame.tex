@@ -4,6 +4,10 @@
 \usepackage[british, main=ngerman]{babel}
 \usepackage{tikz}
 
+\setlength\parindent=0pt
+\setlength\parfillskip=1em plus 1fil
+\setlength\parskip=0pt
+
 \newcommand\bigfont[1]{{\fontsize{40}{48}\sffamily\bfseries\selectfont #1}}
 
 \newdimen\cardwidth
@@ -25,7 +29,7 @@
 \newcommand\CardFrontNumbered[1]{%
   \begin{CardFront}
     \node[draw, line width=1.5pt, fill=blue!30, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont #1};
-  \end{CardFront}
+  \end{CardFront}%
 }
 
 \begin{document}
@@ -33,4 +37,6 @@ Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
 \CardFrontNumbered{1}%
 \CardFrontNumbered{2}%
+\CardFrontNumbered{3}%
+\CardFrontNumbered{4}%
 \end{document}
