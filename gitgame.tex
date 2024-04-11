@@ -4,8 +4,7 @@
 \usepackage[british, main=ngerman]{babel}
 \usepackage{tikz}
 
-\renewcommand{\familydefault}{\sfdefault}
-\newcommand\bigfont[1]{{\fontsize{40}{48}\bfseries\selectfont #1}}
+\newcommand\bigfont[1]{{\fontsize{40}{48}\sffamily\bfseries\selectfont #1}}
 
 \newdimen\cardwidth
 \cardwidth=60mm
@@ -25,7 +24,7 @@
 }
 \newcommand\CardFrontNumbered[1]{%
   \begin{CardFront}
-    \node[draw, fill=blue!30, circle, anchor=center] at (Center) {\bigfont #1};
+    \node[draw, line width=1.5pt, fill=blue!30, circle, anchor=center, minimum radius=0.5*\borderwidth] at (Center) {\bigfont #1};
   \end{CardFront}
 }
 
