@@ -36,19 +36,19 @@
       \auxnum=#1
       \multiply\auxnum by 12
       \colorlet{numcolor}{middlecolor!\the\auxnum!nullcolor}
-      \def\eight{fill=white}
+      \def\eight{fill color=white}
     \else
       \auxnum=#1
       \advance\auxnum by -8
       \multiply\auxnum by 12
       \colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}
-      \def\eight{fill=black}
+      \def\eight{fill color=black}
     \fi
     \node[draw, line width=1.5pt, fill=numcolor, circle, anchor=center, minimum size=0.5*\cardwidth] at (Center) {\bigfont{#1}};
-    \path (Center)++(-0.21*\cardwidth,-0.35*\cardwidth) circle[draw,\eight, radius=3mm];
-    \path (Center)++(-0.07*\cardwidth,-0.35*\cardwidth) circle[draw,\eight, radius=3mm];
-    \path (Center)++(+0.07*\cardwidth,-0.35*\cardwidth) circle[draw,\eight, radius=3mm];
-    \path (Center)++(+0.21*\cardwidth,-0.35*\cardwidth) circle[draw,\eight, radius=3mm];
+    \path (Center)++(-0.21*\cardwidth,-0.35*\cardwidth) circle[draw,fill,\eight, radius=3mm];
+    \path (Center)++(-0.07*\cardwidth,-0.35*\cardwidth) circle[draw,fill,\eight, radius=3mm];
+    \path (Center)++(+0.07*\cardwidth,-0.35*\cardwidth) circle[draw,fill,\eight, radius=3mm];
+    \path (Center)++(+0.21*\cardwidth,-0.35*\cardwidth) circle[draw,fill,\eight, radius=3mm];
   \end{CardFront}%
 }
 
