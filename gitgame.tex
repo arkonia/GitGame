@@ -8,7 +8,8 @@
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
 \begin{tikzpicture}
-  \draw (0,0) rectangle (60mm,90mm);
-  \node[circle, radius=15mm] at (35mm,45mm) {Test};
+  \draw (0,0) rectangle[rounded corners=5mm] (60mm,90mm);
+  \fill[green!20] (5mm,5mm) rectangle[rounded corners=5mm] (55mm,85mm);
+  \node[draw, circle, radius=15mm, anchor=center] at (30mm,45mm) {Test};
 \end{tikzpicture}
 \end{document}
