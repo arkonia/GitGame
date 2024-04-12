@@ -1,6 +1,8 @@
 \documentclass[DIV=12]{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
 
+\usepackage{geometry}
+
 \usepackage[british, main=ngerman]{babel}
 \usepackage{tikz}
 
@@ -8,10 +10,12 @@
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
 
-\usepackage{fontspec}
-\setmainfont{Linux Libertine O}
-\setsansfont[Numbers=OldStyle]{Linux Biolinum O}
-\newcommand\bigfont[1]{{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
+%\usepackage{fontspec}
+%\setmainfont{Linux Libertine O}
+%\setsansfont{Linux Biolinum O}
+\newcommand\hugefont[1]{{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
+\newcommand\bigfont[1]{{\fontsize{20}{24}\sffamily\bfseries\selectfont #1}}
+\newcommand\textfontsize[1]{\fontsize{10}{12}\sffamily\selectfont #1}
 
 \newdimen\cardwidth
 \cardwidth=60mm
@@ -19,39 +23,58 @@
 \cardheight=90mm
 \newdimen\cardborder
 \cardborder=5mm
+\newdimen\cardtextwidth
+\cardtextwidth=\cardwidth
+\advance\cardtextwidth by -2.5\cardborder
 
 \newcount\auxnum
+\newcommand\CardBack{%
+  \begin{tikzpicture}
+	\draw[rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
+	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
+	\fill[green!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+    \node at (Center) {\hugefont{git}};
+  \end{tikzpicture}%
+}
 \newenvironment{CardFront}{%
   \begin{tikzpicture}
     \draw[rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
-    \fill[green!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+    \fill[gray!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
 }{
   \end{tikzpicture}%
 }
-\colorlet{nullcolor}{yellow!30}
-\colorlet{middlecolor}{green!30}
-\colorlet{highcolor}{blue!30}
-\newcommand\CardFrontNumbered[1]{%
+\colorlet{nullcolor}{yellow!75}
+\colorlet{middlecolor}{green!65}
+\colorlet{highcolor}{blue!65}
+\newcommand\CardFrontNumbered[3][git commit]{%
   \begin{CardFront}
-    \ifnum#1<8
-      \auxnum=#1
+    \ifnum#2<8
+      \auxnum=#2
       \multiply\auxnum by 12
       \colorlet{numcolor}{middlecolor!\the\auxnum!nullcolor}
       \def\eight{white}
-      \auxnum=#1
+      \auxnum=#2
     \else
-      \auxnum=#1
+      \auxnum=#2
       \advance\auxnum by -8
       \multiply\auxnum by 12
       \colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}
       \def\eight{black}
-      \auxnum=#1
+      \auxnum=#2
       \advance\auxnum by -8
     \fi
     \draw[line width=1.5pt, fill=numcolor] (Center) circle[radius=0.25*\cardwidth];
-    \path (Center)+(0,0.025\cardwidth) node[anchor=center] {\bigfont{#1}};
+    \path (Center)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{#2}};
+
+    \path (Center)+(0,0.25\cardheight) node {\bigfont{#1}};
+    \path (Center)+(0,-0.25\cardwidth-0.025\cardheight) node[anchor=north] {%
+    	\begin{minipage}{\cardtextwidth}
+    		\textfontsize
+    		#3
+    	\end{minipage}};
     
     \ifnum\auxnum<4
     	\def\four{white}
@@ -84,11 +107,34 @@
 \begin{document}
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
-\CardFrontNumbered{1}%
-\CardFrontNumbered{2}%
-\CardFrontNumbered{3}%
+\vfill
+Es folgen die Seiten mit den Karten zum Ausdrucken.
+\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
 
-\CardFrontNumbered{10}%
-\CardFrontNumbered{12}%
-\CardFrontNumbered{15}%
+\CardFrontNumbered[git status]{0}{--~eine Karte ziehen}%
+\CardFrontNumbered{1}{}%
+\CardFrontNumbered{2}{}%
+
+\CardFrontNumbered{3}{}%
+\CardFrontNumbered{4}{}%
+\CardFrontNumbered{5}{}%
+
+\CardFrontNumbered{6}{}%
+\CardFrontNumbered{7}{}%
+\CardFrontNumbered{8}{}%
+
+\clearpage
+%\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
+\CardBack%
+\CardBack%
+\CardBack%
+
+\CardBack%
+\CardBack%
+\CardBack%
+
+\CardBack%
+\CardBack%
+\CardBack%
+
 \end{document}
