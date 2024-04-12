@@ -26,11 +26,13 @@
 \newdimen\cardtextwidth
 \cardtextwidth=\cardwidth
 \advance\cardtextwidth by -2.5\cardborder
+\newdimen\cardlinewidth
+\cardlinewidth=0.4pt
 
 \newcount\auxnum
 \newcommand\CardBack{%
   \begin{tikzpicture}
-	\draw[rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
 	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
 	\fill[green!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
@@ -39,7 +41,7 @@
 }
 \newenvironment{CardFront}{%
   \begin{tikzpicture}
-    \draw[rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+    \draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
     \fill[gray!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
@@ -109,7 +111,10 @@ Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
 \vfill
 Es folgen die Seiten mit den Karten zum Ausdrucken.
-\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
+\newdimen\auxdim
+\auxdim=3\cardwidth
+\advance\auxdim by 3\cardlinewidth,
+\newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
 
 \CardFrontNumbered[git status]{0}{--~eine Karte ziehen}%
 \CardFrontNumbered{1}{}%
