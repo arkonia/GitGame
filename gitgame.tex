@@ -15,7 +15,11 @@
 %\setsansfont{Linux Biolinum O}
 \newcommand\hugefont[1]{{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
 \newcommand\bigfont[1]{{\fontsize{20}{24}\sffamily\bfseries\selectfont #1}}
-\newcommand\textfontsize[1]{\fontsize{10}{12}\sffamily\selectfont #1}
+%\newcommand\textfontsize[1]{\fontsize{10}{12}\sffamily\selectfont #1}
+\newcommand\textfontsize[1]{\fontsize{9}{10}\sffamily\selectfont #1}
+
+\newcommand\rede[1]{\glqq #1\grqq{}}
+\newcommand\Item{$\bullet$\kern0.333em}
 
 \newdimen\cardwidth
 \cardwidth=60mm
@@ -39,20 +43,33 @@
     \node at (Center) {\hugefont{git}};
   \end{tikzpicture}%
 }
-\newenvironment{CardFront}{%
+\newenvironment{CardFront}[1]{%
   \begin{tikzpicture}
     \draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
     \fill[gray!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+    \path (Center)+(0,0.05\cardheight) coordinate (UCenter);
+	
+	% Überschrift
+	\path (UCenter)+(0,0.25\cardheight) node {\bigfont{#1}};
 }{
   \end{tikzpicture}%
 }
+\colorlet{errorcolor}{red!75}
+\colorlet{warncolor}{orange!75}
 \colorlet{nullcolor}{yellow!75}
 \colorlet{middlecolor}{green!65}
 \colorlet{highcolor}{blue!65}
-\newcommand\CardFrontNumbered[3][git commit]{%
-  \begin{CardFront}
+\newcommand\CardTextField[1]{%
+    \path (UCenter)+(0,-0.25\cardwidth-0.025\cardheight) node[anchor=north] {%
+	\begin{minipage}{\cardtextwidth}
+		\textfontsize\rightskip0pt plus 1em
+		#1
+	\end{minipage}};
+}
+\newcommand\CardFrontNumbered[3][commit]{% Überschrift, Zahl, Text
+  \begin{CardFront}{#1}
     \ifnum#2<8
       \auxnum=#2
       \multiply\auxnum by 12
@@ -68,15 +85,12 @@
       \auxnum=#2
       \advance\auxnum by -8
     \fi
-    \draw[line width=1.5pt, fill=numcolor] (Center) circle[radius=0.25*\cardwidth];
-    \path (Center)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{#2}};
+    % Zahlwert
+    \draw[line width=1.5pt, fill=numcolor] (UCenter) circle[radius=0.25*\cardwidth];
+    \path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{#2}};
 
-    \path (Center)+(0,0.25\cardheight) node {\bigfont{#1}};
-    \path (Center)+(0,-0.25\cardwidth-0.025\cardheight) node[anchor=north] {%
-    	\begin{minipage}{\cardtextwidth}
-    		\textfontsize
-    		#3
-    	\end{minipage}};
+    % Textbereich
+    \CardTextField{#3}
     
     \ifnum\auxnum<4
     	\def\four{white}
@@ -95,7 +109,7 @@
 	\else
 		\def\one{black}
 	\fi
-    \path (Center)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
+    \path (UCenter)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
     \draw[fill=\eight] (aux) circle[radius=1mm];
     \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
 	\draw[fill=\four] (aux) circle[radius=1mm];
@@ -103,6 +117,27 @@
 	\draw[fill=\two] (aux) circle[radius=1mm];
     \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
 	\draw[fill=\one] (aux) circle[radius=1mm];
+  \end{CardFront}%
+}
+\newcommand\CardFrontCommit[2][\centering\rede{git push!}]{\CardFrontNumbered{#2}{#1}}% Text, Zahl
+\newcommand\CardFrontSign[4]{% Überschrift, Zeichen, Farbe, Text
+  \begin{CardFront}{#1}
+	% Zeichen
+	\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
+	\path (UCenter) node[anchor=center] {\hugefont{#2}};
+
+	% Textbereich
+	\CardTextField{#4}
+  \end{CardFront}%
+}
+\newcommand\CardFrontTikz[4]{% Überschrift, Tikz-Graphik, Farbe, Text
+  \begin{CardFront}{#1}
+	% Tikz-Graphik
+	\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
+	#2
+	
+	% Textbereich
+	\CardTextField{#4}
   \end{CardFront}%
 }
 
@@ -116,19 +151,74 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \advance\auxdim by 3\cardlinewidth,
 \newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
 
-\CardFrontNumbered[git status]{0}{--~eine Karte ziehen}%
-\CardFrontNumbered{1}{}%
-\CardFrontNumbered{2}{}%
+\CardFrontSign{help}{?}{warncolor}{%
+	\rede{Ich weiß gerade nicht weiter und brauche Hilfe: git help!}\\[1ex]
+	\Item Leg diese Karte auf den Abwurfstapel.\\
+	\Item Zieh drei neue Handkarten.}%
+\CardFrontSign{status}{?}{nullcolor}{%
+	\rede{Ich habe gerade keine Ideen und muss mir erstmal einen Überblick verschaffen: git status!}\\[1ex]
+	\Item Leg diese Karte auf den Abwurfstapel.\\
+	\Item Zieh eine neue Handkarte.}%
+\CardFrontNumbered{3}{%
+	\centerline{\textbf{\MakeUppercase{Merge Conflict}}}
+	\rede{git push -- Dabei verursache und löse ich einen Merge Conflict!}\\[1ex]
+	\Item Leg den vorherigen Commit als Deinen eigenen an, unter diese Karte.}%
 
-\CardFrontNumbered{3}{}%
-\CardFrontNumbered{4}{}%
-\CardFrontNumbered{5}{}%
-
-\CardFrontNumbered{6}{}%
-\CardFrontNumbered{7}{}%
-\CardFrontNumbered{8}{}%
+\CardFrontTikz{revert}{%
+	\begin{scope}[line width=2pt]
+		\path (UCenter)--+(0.05\cardwidth,0.075\cardheight) coordinate (aux);
+		\node[draw, fill=gray, circle, radius=1.5mm]  (A) at (aux) {};
+		\path (UCenter)--+(0.05\cardwidth,-0.075\cardheight) coordinate (aux);
+		\node[draw, fill=gray, circle, radius=1.5mm]  (B) at (aux) {};
+		\draw (A)--(B);
+		\draw[->] (A)..controls +(-0.2\cardwidth,0) and +(-0.2\cardwidth,0)..(B);
+	\end{scope}
+	}{errorcolor}{%
+	\rede{Der gerade geschriebene Code macht schwere Fehler und muss wieder weg: git revert!}\\[0.5ex]
+	\Item Muss unmittelbar auf eine Zahlkarte folgen und negiert sie.\\
+	\Item Leg beide Karten auf den Abwurfstapel.}%
+\CardFrontTikz{stash}{%
+	\begin{scope}[line width=2pt]
+		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
+		\draw[->, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
+	\end{scope}
+	}{blue!50}{%
+	\centerline{\rede{git stash!}}%\\[1ex]
+	\vskip1ex
+	\Item Leg drei Handkarten vor Dir ab.\\
+	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
+\CardFrontTikz{release}{%
+	}{middlecolor}{\rede{Ich beschließe, dass der aktuelle Stand ausgeliefert wird: -- git tag!}\\[0.5ex]
+	\Item Werte alle Karten im Repo.\ aus.\\
+	\Item Leg die Karten vom Repo., die aktuellen Issues und dieser Karte auf den Abwurfstapel.\\
+	\Item Ziehe dann einen neuen CR.}%
 
 \clearpage
+\CardBack%
+\CardBack%
+\CardBack%
+
+\CardBack%
+\CardBack%
+\CardBack%
+
+\CardBack%
+\CardBack%
+\CardBack%
+
+
+\CardFrontCommit{1}%
+\CardFrontCommit{2}%
+\CardFrontCommit{3}%
+
+\CardFrontCommit{4}%
+\CardFrontCommit{6}%
+\CardFrontCommit{8}%
+
+\CardFrontCommit{10}%
+\CardFrontCommit{12}%
+\CardFrontCommit{15}%
+
 %\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
 \CardBack%
 \CardBack%
