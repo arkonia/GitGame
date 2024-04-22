@@ -13,7 +13,8 @@
 %\usepackage{fontspec}
 %\setmainfont{Linux Libertine O}
 %\setsansfont{Linux Biolinum O}
-\newcommand\hugefont[1]{{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
+\newcommand\hugefont[1]{\raisebox{-5pt}{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
+\newcommand\hugemathfont[1]{{\fontsize{40}{48}\sffamily\bfseries\selectfont #1}}
 \newcommand\bigfont[1]{{\fontsize{20}{24}\sffamily\bfseries\selectfont #1}}
 %\newcommand\textfontsize[1]{\fontsize{10}{12}\sffamily\selectfont #1}
 \newcommand\textfontsize[1]{\fontsize{9}{10}\sffamily\selectfont #1}
@@ -34,12 +35,12 @@
 \cardlinewidth=0.4pt
 
 \newcount\auxnum
-\newcommand\CardBack{%
+\newcommand\CardBack[1][green!20]{%
   \begin{tikzpicture}
 	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
 	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
-	\fill[green!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+	\fill[#1, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     \node at (Center) {\hugefont{git}};
   \end{tikzpicture}%
 }
@@ -48,7 +49,7 @@
     \draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
-    \fill[gray!20, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+    \fill[bgcolor, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     \path (Center)+(0,0.05\cardheight) coordinate (UCenter);
 	
 	% Überschrift
@@ -56,6 +57,8 @@
 }{
   \end{tikzpicture}%
 }
+\colorlet{bgcolor}{gray!20}
+\colorlet{bgcolor2}{orange!25}
 \colorlet{errorcolor}{red!75}
 \colorlet{warncolor}{orange!75}
 \colorlet{nullcolor}{yellow!75}
@@ -140,6 +143,15 @@
 	\CardTextField{#4}
   \end{CardFront}%
 }
+\newcommand\CardFrontTikzBase[3]{% Überschrift, Tikz-Graphik, Text
+	\begin{CardFront}{#1}
+		% Tikz-Graphik
+		#2
+		
+		% Textbereich
+		\CardTextField{#3}
+	\end{CardFront}%
+}
 
 \begin{document}
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
@@ -154,11 +166,11 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardFrontSign{help}{?}{warncolor}{%
 	\rede{Ich weiß gerade nicht weiter und brauche Hilfe: git help!}\\[1ex]
 	\Item Leg diese Karte auf den Abwurfstapel.\\
-	\Item Zieh drei neue Handkarten.}%
+	\Item Zieh drei Handkarten zusätzlich.}%
 \CardFrontSign{status}{?}{nullcolor}{%
 	\rede{Ich habe gerade keine Ideen und muss mir erstmal einen Überblick verschaffen: git status!}\\[1ex]
 	\Item Leg diese Karte auf den Abwurfstapel.\\
-	\Item Zieh eine neue Handkarte.}%
+	\Item Zieh eine Handkarte zusätzlich.}%
 \CardFrontNumbered{3}{%
 	\centerline{\textbf{\MakeUppercase{Merge Conflict}}}
 	\rede{git push -- Dabei verursache und löse ich einen Merge Conflict!}\\[1ex]
@@ -180,18 +192,26 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardFrontTikz{stash}{%
 	\begin{scope}[line width=2pt]
 		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
-		\draw[->, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
+		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
 	\end{scope}
 	}{blue!50}{%
 	\centerline{\rede{git stash!}}%\\[1ex]
 	\vskip1ex
-	\Item Leg drei Handkarten vor Dir ab.\\
+	\Item Leg zwei Handkarten vor Dir ab.\\
 	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
-\CardFrontTikz{release}{%
-	}{middlecolor}{\rede{Ich beschließe, dass der aktuelle Stand ausgeliefert wird: -- git tag!}\\[0.5ex]
+\CardFrontTikzBase{release}{%
+	\path (UCenter)++(-0.075\cardwidth,0) coordinate (center);
+	\draw[rounded corners, line width=1.5pt, fill=orange] (center)++(-0.2\cardwidth,-0.175\cardwidth)--++(0.4\cardwidth,0)--++(0.175\cardwidth,0.175\cardwidth)--++(-0.175\cardwidth,0.175\cardwidth)--++(-0.4\cardwidth,0)--cycle;
+	\draw[line width=1.5pt, fill=bgcolor] (center)+(0.25\cardwidth,0) circle[radius=3mm];
+	\node at (center) {\bigfont{v\,1.x}};
+	}{\rede{Ich beschließe, dass der aktuelle Stand ausgeliefert wird: git tag!}\\[0.5ex]
 	\Item Werte alle Karten im Repo.\ aus.\\
-	\Item Leg die Karten vom Repo., die aktuellen Issues und dieser Karte auf den Abwurfstapel.\\
+	\Item Leg die Karten vom Repo., die aktuellen Issues und diese Karte auf den Abwurfstapel.\\
 	\Item Ziehe dann einen neuen CR.}%
+
+\CardFrontNumbered[Issue: CR]{10}{\Item Für die nächste Lieferung müssen mindestens 10~Punkte erreicht werden.}%
+\CardFrontNumbered[Issue: CR]{12}{\Item Für die nächste Lieferung müssen mindestens 12~Punkte erreicht werden.}%
+\CardFrontNumbered[Issue: CR]{15}{\Item Für die nächste Lieferung müssen mindestens 15~Punkte erreicht werden.}%
 
 \clearpage
 \CardBack%
@@ -202,22 +222,28 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardBack%
 \CardBack%
 
-\CardBack%
-\CardBack%
-\CardBack%
+\CardBack[bgcolor2]%
+\CardBack[bgcolor2]%
+\CardBack[bgcolor2]%
 
 
+\CardFrontTikz{Issue: Bug}{%
+	%	\draw[line width=1.5pt, rounded corners, fill=blue!50] (UCenter)++(-0.25\cardwidth,-0.25\cardwidth) rectangle ++(0.5\cardwidth,0.5\cardwidth);
+	\node at (UCenter) {\hugemathfont{+}\hugefont{5}};
+}{errorcolor}{\rede{Ich habe einen Fehler gefunden, der auch noch gelöst werden muss.}\\[1ex]
+	\Item Leg die Karte in der Mitte ab.
+	\Item Für die nächste Lieferung müssen noch 5~Punkte zusätzlich erreicht werden.}%
 \CardFrontCommit{1}%
 \CardFrontCommit{2}%
+
 \CardFrontCommit{3}%
-
 \CardFrontCommit{4}%
-\CardFrontCommit{6}%
-\CardFrontCommit{8}%
+\CardFrontCommit{5}%
 
-\CardFrontCommit{10}%
-\CardFrontCommit{12}%
-\CardFrontCommit{15}%
+\CardFrontCommit{6}%
+\CardFrontCommit{7}%
+\CardFrontCommit{8}%
+%\CardFrontCommit{10}%
 
 %\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
 \CardBack%
