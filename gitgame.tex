@@ -4,6 +4,7 @@
 \usepackage{geometry}
 
 \usepackage[british, main=ngerman]{babel}
+\usepackage{xcolor}
 \usepackage{tikz}
 
 \setlength\parindent{0pt}
@@ -37,7 +38,7 @@
 \newcount\auxnum
 \newcommand\CardBack[1][green!20]{%
   \begin{tikzpicture}
-	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+%	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
 	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
 	\fill[#1, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
@@ -75,18 +76,24 @@
   \begin{CardFront}{#1}
     \ifnum#2<8
       \auxnum=#2
-      \multiply\auxnum by 12
+      \ifnum#2=0\else\advance\auxnum by -1\fi
+      \multiply\auxnum by 14
       \colorlet{numcolor}{middlecolor!\the\auxnum!nullcolor}
       \def\eight{white}
       \auxnum=#2
     \else
-      \auxnum=#2
-      \advance\auxnum by -8
-      \multiply\auxnum by 12
-      \colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}
       \def\eight{black}
-      \auxnum=#2
-      \advance\auxnum by -8
+      \ifnum#2<15
+        \auxnum=#2
+        \advance\auxnum by -8
+        \multiply\auxnum by 14
+        \colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}
+        \auxnum=#2
+        \advance\auxnum by -8
+      \else
+        \colorlet{numcolor}{highcolor}
+        \auxnum=7
+      \fi
     \fi
     % Zahlwert
     \draw[line width=1.5pt, fill=numcolor] (UCenter) circle[radius=0.25*\cardwidth];
@@ -153,6 +160,39 @@
 	\end{CardFront}%
 }
 
+\newcommand\CardRelease{%
+	\CardFrontTikzBase{release}{%
+		\path (UCenter)++(-0.075\cardwidth,0) coordinate (center);
+		\draw[rounded corners, line width=1.5pt, fill=orange] (center)++(-0.2\cardwidth,-0.175\cardwidth)--++(0.4\cardwidth,0)--++(0.175\cardwidth,0.175\cardwidth)--++(-0.175\cardwidth,0.175\cardwidth)--++(-0.4\cardwidth,0)--cycle;
+		\draw[line width=1.5pt, fill=bgcolor] (center)+(0.25\cardwidth,0) circle[radius=3mm];
+		\node at (center) {\bigfont{v\,1.x}};
+	}{\rede{Ich beschließe, dass der aktuelle Stand ausgeliefert wird: git tag!}\\[0.5ex]
+		\Item Werte alle Karten im Repo.\ aus.\\
+		\Item Leg die Karten vom Repo., die aktuellen Issues und diese Karte auf den Abwurfstapel.\\
+		\Item Ziehe dann einen neuen CR.}%
+}
+\newcommand\CardRevert{%
+	\CardFrontTikz{revert}{%
+		\begin{scope}[line width=2pt]
+			\path (UCenter)--+(0.05\cardwidth,0.075\cardheight) coordinate (aux);
+			\node[draw, fill=gray, circle, radius=1.5mm]  (A) at (aux) {};
+			\path (UCenter)--+(0.05\cardwidth,-0.075\cardheight) coordinate (aux);
+			\node[draw, fill=gray, circle, radius=1.5mm]  (B) at (aux) {};
+			\draw (A)--(B);
+			\draw[->] (A)..controls +(-0.2\cardwidth,0) and +(-0.2\cardwidth,0)..(B);
+		\end{scope}
+	}{errorcolor}{%
+		\rede{Der gerade geschriebene Code macht schwere Fehler und muss wieder weg: git revert!}\\[0.5ex]
+		\Item Muss unmittelbar auf eine Zahlkarte folgen und negiert sie.\\
+		\Item Leg beide Karten auf den Abwurfstapel.}%
+}
+\newcommand\CardMergeConflict[1]{% Zahlwert
+	\CardFrontNumbered{#1}{%
+		\centerline{\textbf{\MakeUppercase{Merge Conflict}}}
+		\rede{git push -- Dabei verursache und löse ich einen Merge Conflict!}\\[1ex]
+		\Item Leg den vorherigen Commit als Deinen eigenen an, unter diese Karte.}%
+}
+
 \begin{document}
 Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 
@@ -160,7 +200,7 @@ Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
 Es folgen die Seiten mit den Karten zum Ausdrucken.
 \newdimen\auxdim
 \auxdim=3\cardwidth
-\advance\auxdim by 3\cardlinewidth,
+\advance\auxdim by 3\cardlinewidth
 \newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
 
 \CardFrontSign{help}{?}{warncolor}{%
@@ -171,43 +211,20 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 	\rede{Ich habe gerade keine Ideen und muss mir erstmal einen Überblick verschaffen: git status!}\\[1ex]
 	\Item Leg diese Karte auf den Abwurfstapel.\\
 	\Item Zieh eine Handkarte zusätzlich.}%
-\CardFrontNumbered{3}{%
-	\centerline{\textbf{\MakeUppercase{Merge Conflict}}}
-	\rede{git push -- Dabei verursache und löse ich einen Merge Conflict!}\\[1ex]
-	\Item Leg den vorherigen Commit als Deinen eigenen an, unter diese Karte.}%
+\CardMergeConflict{3}%
 
-\CardFrontTikz{revert}{%
-	\begin{scope}[line width=2pt]
-		\path (UCenter)--+(0.05\cardwidth,0.075\cardheight) coordinate (aux);
-		\node[draw, fill=gray, circle, radius=1.5mm]  (A) at (aux) {};
-		\path (UCenter)--+(0.05\cardwidth,-0.075\cardheight) coordinate (aux);
-		\node[draw, fill=gray, circle, radius=1.5mm]  (B) at (aux) {};
-		\draw (A)--(B);
-		\draw[->] (A)..controls +(-0.2\cardwidth,0) and +(-0.2\cardwidth,0)..(B);
-	\end{scope}
-	}{errorcolor}{%
-	\rede{Der gerade geschriebene Code macht schwere Fehler und muss wieder weg: git revert!}\\[0.5ex]
-	\Item Muss unmittelbar auf eine Zahlkarte folgen und negiert sie.\\
-	\Item Leg beide Karten auf den Abwurfstapel.}%
+\CardRevert%
 \CardFrontTikz{stash}{%
 	\begin{scope}[line width=2pt]
 		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
 		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
 	\end{scope}
-	}{blue!50}{%
+	}{violet!60}{%
 	\centerline{\rede{git stash!}}%\\[1ex]
 	\vskip1ex
 	\Item Leg zwei Handkarten vor Dir ab.\\
 	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
-\CardFrontTikzBase{release}{%
-	\path (UCenter)++(-0.075\cardwidth,0) coordinate (center);
-	\draw[rounded corners, line width=1.5pt, fill=orange] (center)++(-0.2\cardwidth,-0.175\cardwidth)--++(0.4\cardwidth,0)--++(0.175\cardwidth,0.175\cardwidth)--++(-0.175\cardwidth,0.175\cardwidth)--++(-0.4\cardwidth,0)--cycle;
-	\draw[line width=1.5pt, fill=bgcolor] (center)+(0.25\cardwidth,0) circle[radius=3mm];
-	\node at (center) {\bigfont{v\,1.x}};
-	}{\rede{Ich beschließe, dass der aktuelle Stand ausgeliefert wird: git tag!}\\[0.5ex]
-	\Item Werte alle Karten im Repo.\ aus.\\
-	\Item Leg die Karten vom Repo., die aktuellen Issues und diese Karte auf den Abwurfstapel.\\
-	\Item Ziehe dann einen neuen CR.}%
+\CardRelease%
 
 \CardFrontNumbered[Issue: CR]{10}{\Item Für die nächste Lieferung müssen mindestens 10~Punkte erreicht werden.}%
 \CardFrontNumbered[Issue: CR]{12}{\Item Für die nächste Lieferung müssen mindestens 12~Punkte erreicht werden.}%
@@ -245,7 +262,33 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardFrontCommit{8}%
 %\CardFrontCommit{10}%
 
+
 %\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
+\CardBack%
+\CardBack%
+\CardBack%
+
+\CardBack%
+\CardBack%
+\CardBack%
+
+\CardBack%
+\CardBack%
+\CardBack%
+
+
+\CardRelease%
+\CardRelease%
+\CardRelease%
+
+\CardFrontCommit{2}%
+\CardFrontCommit{3}%
+\CardFrontCommit{4}%
+
+\CardRevert%
+\CardMergeConflict{2}%
+\CardMergeConflict{4}%
+
 \CardBack%
 \CardBack%
 \CardBack%
