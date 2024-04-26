@@ -32,7 +32,7 @@
 \cardborder=5mm
 \newdimen\cardtextwidth
 \cardtextwidth=\cardwidth
-\advance\cardtextwidth by -2.5\cardborder
+\advance\cardtextwidth by -2.75\cardborder
 \newdimen\cardlinewidth
 \cardlinewidth=0.4pt
 
@@ -57,11 +57,16 @@
 \newenvironment{CardFront}[1]{%
   \global\advance\cardnum by 1%
   \begin{tikzpicture}
+  	% Schnittrahmen
     \draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
+    
+    % innerer Rahmen
     \fill[bgcolor, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
-    \path (Center)+(0,0.05\cardheight) coordinate (UCenter);
+
+    \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
 	
 	% Überschrift
 	\path (UCenter)+(0,0.25\cardheight) node {\bigfont{#1}};
@@ -81,100 +86,12 @@
 \colorlet{nullcolor}{yellow!75}
 \colorlet{middlecolor}{green!65}
 \colorlet{highcolor}{blue!65}
-\newcommand\CardTextField[1]{%
+\newcommand\CardTextField[1]{% Text
     \path (UCenter)+(0,-0.25\cardwidth-0.025\cardheight) node[anchor=north] {%
 	\begin{minipage}{\cardtextwidth}
-		\textfontsize\rightskip0pt plus 1em
+		\textfontsize\rightskip0pt minus 0.25em
 		#1
 	\end{minipage}};
-}
-\newcommand\CardFrontNumbered[3][commit]{% Überschrift, Zahl, Text
-  \begin{CardFront}{#1}
-  	\ifnum#2<0
-		\colorlet{numcolor}{errorcolor}
-  	\else
-	    \ifnum#2<8
-	      \auxnum=#2
-	      \ifnum#2=0\else\advance\auxnum by -1\fi
-	      \multiply\auxnum by 14
-	      \colorlet{numcolor}{middlecolor!\the\auxnum!nullcolor}
-	      \def\eight{white}
-	      \auxnum=#2
-	    \else
-	      \def\eight{black}
-	      \ifnum#2<15
-	        \auxnum=#2
-	        \advance\auxnum by -8
-	        \multiply\auxnum by 14
-	        \colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}
-	        \auxnum=#2
-	        \advance\auxnum by -8
-	      \else
-	        \colorlet{numcolor}{highcolor}
-	        \auxnum=7
-	      \fi
-	    \fi
-	\fi
-	    
-	% Zahlwert
-	\draw[line width=1.5pt, fill=numcolor] (UCenter) circle[radius=0.25*\cardwidth];
-	\ifnum#2<0\else
-		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{#2}};
-	\fi
-	
-	% Textbereich
-	\CardTextField{#3}
-	    
-  	\ifnum#2<0
-	\else
-	    \ifnum\auxnum<4
-	    	\def\four{white}
-	    \else
-	    	\def\four{black}
-	    	\advance\auxnum by -4
-	    \fi
-	    \ifnum\auxnum<2
-			\def\two{white}
-		\else
-			\def\two{black}
-			\advance\auxnum by -2
-		\fi
-	    \ifnum\auxnum<1
-			\def\one{white}
-		\else
-			\def\one{black}
-		\fi
-	    \path (UCenter)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
-	    \draw[fill=\eight] (aux) circle[radius=1mm];
-	    \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
-		\draw[fill=\four] (aux) circle[radius=1mm];
-	    \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
-		\draw[fill=\two] (aux) circle[radius=1mm];
-	    \path (aux)++(0.06*\cardwidth,0) coordinate (aux);
-		\draw[fill=\one] (aux) circle[radius=1mm];
-	\fi
-  \end{CardFront}%
-}
-\newcommand\CardFrontCommit[2][\centering\rede{git push!}]{\CardFrontNumbered{#2}{#1}}% Text, Zahl
-\newcommand\CardFrontSign[4]{% Überschrift, Zeichen, Farbe, Text
-  \begin{CardFront}{#1}
-	% Zeichen
-	\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
-	\path (UCenter) node[anchor=center] {\hugefont{#2}};
-
-	% Textbereich
-	\CardTextField{#4}
-  \end{CardFront}%
-}
-\newcommand\CardFrontTikz[4]{% Überschrift, Tikz-Graphik, Farbe, Text
-  \begin{CardFront}{#1}
-	% Tikz-Graphik
-	\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
-	#2
-	
-	% Textbereich
-	\CardTextField{#4}
-  \end{CardFront}%
 }
 \newcommand\CardFrontTikzBase[3]{% Überschrift, Tikz-Graphik, Text
 	\begin{CardFront}{#1}
@@ -184,6 +101,100 @@
 		% Textbereich
 		\CardTextField{#3}
 	\end{CardFront}%
+}
+\newcommand\CardFrontTikzCircle[4]{% Überschrift, Tikz-Graphik, Farbe, Text
+	\CardFrontTikzBase{#1}{%
+		\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
+		#2}{#4}%
+}
+\newcommand\CardFrontTikzBox[5][0.25\cardwidth]{% halbe Breite, Überschrift, Tikz-Graphik, Farbe, Text
+	\CardFrontTikzBase{#2}{%
+		\draw[line width=1.5pt, rounded corners, fill=#4] (UCenter)++(-#1,-0.2\cardwidth) rectangle ++(2*#1,0.4\cardwidth);
+		#3}{#5}%
+}
+\newcommand\CalcNumberColor[1]{% Zahlwert
+	\ifnum#1<0
+		\colorlet{numcolor}{errorcolor}%
+	\else%
+		\ifnum#1<8%
+			\auxnum=#1
+			\ifnum#1=0\else\advance\auxnum by -1\fi%
+			\multiply\auxnum by 14
+			\colorlet{numcolor}{middlecolor!\the\auxnum!nullcolor}%
+		\else%
+			\ifnum#1<32
+				\auxnum=#1
+				\advance\auxnum by -8
+				\multiply\auxnum by 42
+				\divide\auxnum by 10
+				\colorlet{numcolor}{highcolor!\the\auxnum!middlecolor}%
+			\else%
+				\colorlet{numcolor}{highcolor}%
+			\fi%
+		\fi%
+	\fi%
+%
+	\auxnum=#1
+	\ifnum\auxnum<0\else%
+		\ifnum\auxnum<16
+			\def\sixteen{white}%
+		\else%
+			\def\sixteen{black}%
+			\advance\auxnum by -16
+		\fi%
+		\ifnum\auxnum<8
+			\def\eight{white}%
+		\else%
+			\def\eight{black}%
+			\advance\auxnum by -8
+		\fi%
+		\ifnum\auxnum<4
+			\def\four{white}%
+		\else%
+			\def\four{black}%
+			\advance\auxnum by -4
+		\fi%
+		\ifnum\auxnum<2
+			\def\two{white}%
+		\else%
+			\def\two{black}%
+			\advance\auxnum by -2
+		\fi%
+		\ifnum\auxnum<1%
+			\def\one{white}%
+		\else%
+			\def\one{black}%
+		\fi%
+	\fi%
+	\auxnum=#1
+}
+\newcommand\DrawNumber{
+	\ifnum\auxnum<0\else
+		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{\number\auxnum}};
+		\ifnum\auxnum<16
+			\path (UCenter)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
+		\else
+			\path (UCenter)++(-0.12*\cardwidth,-0.125*\cardwidth) coordinate (aux);
+			\draw[fill=\sixteen] (aux) circle[radius=1mm];
+			\path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+		\fi
+		\draw[fill=\eight] (aux) circle[radius=1mm];
+		\path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+		\draw[fill=\four] (aux) circle[radius=1mm];
+		\path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+		\draw[fill=\two] (aux) circle[radius=1mm];
+		\path (aux)++(0.06*\cardwidth,0) coordinate (aux);
+		\draw[fill=\one] (aux) circle[radius=1mm];
+	\fi
+}
+\newcommand\CardFrontCommit[2][\centering\rede{git push!}]{% Text, Zahlwert
+	\CalcNumberColor{#2}%
+	\CardFrontTikzCircle{commit}{\DrawNumber}{numcolor}{#1}%
+}
+\newcommand\CardFrontSign[4]{% Überschrift, Zeichen, Farbe, Text
+	\CardFrontTikzBox{#1}{%
+		\path (UCenter) node[anchor=center] {\hugefont{#2}};
+	}{#3}{#4}%
 }
 
 \newcommand\CardRelease{%
@@ -199,7 +210,7 @@
 	\Item Leg diese Karte auf den Abwurfstapel und ziehe einen neuen CR.}%
 }
 \newcommand\CardRevert{%
-	\CardFrontTikz{revert}{%
+	\CardFrontTikzBox{revert}{%
 		\begin{scope}[line width=2pt]
 			\path (UCenter)--+(0.05\cardwidth,0.075\cardheight) coordinate (aux);
 			\node[draw, fill=gray, circle, radius=1.5mm]  (A) at (aux) {};
@@ -208,29 +219,30 @@
 			\draw (A)--(B);
 			\draw[->] (A)..controls +(-0.2\cardwidth,0) and +(-0.2\cardwidth,0)..(B);
 		\end{scope}
-	}{errorcolor}{%
+	}{warncolor}{%
 		\centerline{\rede{git revert!}}\vskip0.5ex
-		Der gerade geschriebene Code ist fehlerhaft und muss wieder weg:\\[0.5ex]
+		Der gerade geschriebene Code ist fehlerhaft und muss wieder weg:\vskip0.5ex
 		\Item Muss unmittelbar auf eine Zahlkarte folgen und negiert sie.\\
 		\Item Leg beide Karten auf den Abwurfstapel.}%
 }
 \newcommand\CardMergeConflict[1]{% Zahlwert
-	\CardFrontNumbered{#1}{%
-%		\centerline{\textbf{\MakeUppercase{Merge Conflict}}}
+	\CardFrontCommit[%
 		\centerline{\rede{git push -- merge conflict!}}\vskip0.5ex
-		Mit diesem Commit verursachst und löst du einen Merge Conflict:\\[0.5ex]
-		\Item Übernimm den vorherigen Commit als deinen eigenen, leg ihn unter diese Karte. Diese beiden Commits gelten ab jetzt als einer.}%
+		Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
+		\Item Übernimm den vorherigen Commit als deinen eigenen, leg ihn unter diese Karte. Diese beiden Commits gelten ab jetzt als einer.]{#1}%
 }
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
-	\CardFrontNumbered[Issue: #1]{#2}{\Item Für diese Lieferung müssen mindestens #2~Codezeilen erreicht werden.}%
+	\CalcNumberColor{#2}%
+	\CardFrontTikzBox{Issue: #1}{\DrawNumber}{numcolor}{%
+		\Item Für diese Lieferung müssen mindestens #2~Codezeilen erreicht werden.}%
 }
-\newcommand\CardBug[1]{% Zahlwert
-	\CardFrontTikzBase{Issue: Bug}{%
-		\draw[line width=1.5pt, rounded corners, fill=errorcolor] (UCenter)++(-0.3\cardwidth,-0.2\cardwidth) rectangle ++(0.6\cardwidth,0.4\cardwidth);
-		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#1}};
-	}{\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\\[1ex]
+\newcommand\CardBug[2][0.25\cardwidth]{% halbe Breite, Zahlwert
+	\CardFrontTikzBox[#1]{Issue: Bug}{%
+		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
+		}{errorcolor}{%
+		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
 		\Item Leg die Karte in der Mitte ab.
-		\Item Für die Lieferung müssen noch #1~Codezeilen zusätzlich erreicht werden.}%
+		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich erreicht werden.}%
 }
 
 \begin{document}
@@ -243,22 +255,22 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \advance\auxdim by 3\cardlinewidth
 \newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
 
-\CardFrontSign{help}{?}{warncolor}{%
+\CardFrontSign{help}{?}{middlecolor}{%
 	\centerline{\rede{git help!}}\vskip0.5ex
-	Du weißt gerade nicht weiter und brauchst Hilfe:\\[0.5ex]
+	Du weißt gerade nicht weiter und brauchst Hilfe:\vskip0.5ex
 	\Item Leg diese Karte auf den Abwurfstapel.\\
 	\Item Zieh drei Handkarten zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
 \CardFrontSign{status}{?}{nullcolor}{%
 	\centerline{\rede{git status!}}\vskip0.5ex
-	Du hast gerade keine Idee und brauchst erstmal einen Überblick:\\[0.5ex]
+	Du hast gerade keine Idee und brauchst erstmal einen Überblick:\vskip0.5ex
 	\Item Leg diese Karte auf den Abwurfstapel.\\
 	\Item Zieh eine Handkarte zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
-\CardFrontTikz{stash}{%
+\CardFrontTikzBox{stash}{%
 	\begin{scope}[line width=2pt]
 		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
 		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
 	\end{scope}
-	}{violet!60}{%
+	}{magenta!65}{%
 	\centerline{\rede{git stash!}}\vskip0.5ex
 	\Item Leg bis zu zwei Handkarten vor Dir ab.\\
 	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
@@ -267,6 +279,14 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardRelease%
 \CardRelease%
 
+\CalcNumberColor{2}\CardFrontTikzCircle{rebase}{\DrawNumber}{magenta!65}{%
+	\centerline{\rede{git rebase!}}\vskip1ex
+	%todo%Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
+	\Item Übernimm die vorherigen drei Commits als deine eigenen, leg die Karten unter diese. Alle diese Commits gelten ab jetzt als einer.}%
+\CardFrontTikzBox{cherry-pick}{}{white}{%
+	\centerline{\rede{git cherry-pick!}}\vskip1ex
+	todo}%
+\CardFrontTikzBox{}{}{white}{todo}%
 
 \clearpage
 \CardBack%
@@ -340,13 +360,13 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardIssue{12}%
 \CardIssue{15}%
 
-\CardIssue{16}%
 \CardIssue{20}%
 \CardIssue{24}%
+\CardIssue{30}%
 
 \CardBug{5}%
 \CardBug{8}%
-\CardBug{10}%
+\CardBug[0.275\cardwidth]{10}%
 
 \CardBack[bgcolor2]%
 \CardBack[bgcolor2]%
