@@ -7,6 +7,17 @@
 \usepackage{xcolor}
 \usepackage{tikz}
 
+%\ifdefined\directlua
+%	\edef\pdfcompresslevel{\pdfvariable compresslevel}
+%	\edef\pdfobjcompresslevel{\pdfvariable objcompresslevel}
+%\fi
+%\ifdefined\pdfcompresslevel
+%	\pdfcompresslevel=0
+%	\pdfobjcompresslevel=0
+%\else
+%	\special{dvipdfmx:config z 0}
+%\fi
+
 \setlength\parindent{0pt}
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
@@ -65,6 +76,9 @@
     
     % innerer Rahmen
     \fill[bgcolor, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+    
+    \path (LL)|-(UR) coordinate[midway] (UL);
+    \path (LL)-|(UR) coordinate[midway] (LR);
 
     \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
 	
@@ -81,11 +95,15 @@
 \colorlet{bgcolor}{gray!20}
 \colorlet{bgcolor2}{orange!25} % niedrige CRs
 \colorlet{bgcolor3}{red!20}% hohe CRs
+\colorlet{bg-green}{green!65}
+\colorlet{bg-yellow}{yellow!75}
+\colorlet{bg-blue}{blue!65}
+\colorlet{paleblue}{cyan!35}
 \colorlet{errorcolor}{red!75}
 \colorlet{warncolor}{orange!75}
-\colorlet{nullcolor}{yellow!75}
-\colorlet{middlecolor}{green!65}
-\colorlet{highcolor}{blue!65}
+\colorlet{nullcolor}{bg-yellow}
+\colorlet{middlecolor}{bg-green}
+\colorlet{highcolor}{bg-blue}
 \newcommand\CardTextField[1]{% Text
     \path (UCenter)+(0,-0.25\cardwidth-0.025\cardheight) node[anchor=north] {%
 	\begin{minipage}{\cardtextwidth}
@@ -169,7 +187,9 @@
 	\auxnum=#1
 }
 \newcommand\DrawNumber{
-	\ifnum\auxnum<0\else
+	\ifnum\auxnum<0
+		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{X}};
+	\else
 		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{\number\auxnum}};
 		\ifnum\auxnum<16
 			\path (UCenter)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
@@ -191,6 +211,14 @@
 	\CalcNumberColor{#2}%
 	\CardFrontTikzCircle{commit}{\DrawNumber}{numcolor}{#1}%
 }
+\newcommand\CardFrontCommitPlus[4][\centering\rede{git push!}]{% Text, Zahlwert, Ecksymbol, Eckfarbe
+	\CalcNumberColor{#2}%
+	\CardFrontTikzCircle{commit}{%
+		\DrawNumber %
+		\node[draw, line width=1pt, fill=#4, circle, anchor=north west] at (UL) {\bigfont{#3}};%
+		\node[draw, line width=1.25pt, fill=#4, circle, anchor=north east] at (UR) {\bigfont{#3}};%
+	}{numcolor}{#1}%
+}
 \newcommand\CardFrontSign[4]{% Überschrift, Zeichen, Farbe, Text
 	\CardFrontTikzBox{#1}{%
 		\path (UCenter) node[anchor=center] {\hugefont{#2}};
@@ -206,7 +234,7 @@
 	}{%
 	\centerline{\rede{git tag und .\,.\,. Lieferung!}}\vskip0.5ex
 %	Ich beschließe, dass der aktuelle Stand ausgeliefert wird:
-	\Item Falls das Ziel erreicht ist, werte alle Karten im Repo.\ aus und leg die Karten vom Repo. und die aktuellen Issues auf den Abwurfstapel.\\
+	\Item Falls das Ziel erreicht ist, wertet alle Karten im Repo.\ aus und legt sie sowie die aktuellen Issues und alle Handkarten auf den Abwurfstapel.\\
 	\Item Leg diese Karte auf den Abwurfstapel und ziehe einen neuen CR.}%
 }
 \newcommand\CardRevert{%
@@ -220,21 +248,30 @@
 			\draw[->] (A)..controls +(-0.2\cardwidth,0) and +(-0.2\cardwidth,0)..(B);
 		\end{scope}
 	}{warncolor}{%
-		\centerline{\rede{git revert!}}\vskip0.5ex
+		\centerline{\rede{git revert!}}\vskip1ex
 		Der gerade geschriebene Code ist fehlerhaft und muss wieder weg:\vskip0.5ex
 		\Item Muss unmittelbar auf eine Zahlkarte folgen und negiert sie.\\
 		\Item Leg beide Karten auf den Abwurfstapel.}%
 }
 \newcommand\CardMergeConflict[1]{% Zahlwert
-	\CardFrontCommit[%
-		\centerline{\rede{git push -- merge conflict!}}\vskip0.5ex
+	\CardFrontCommitPlus[%
+		\centerline{\rede{git push -- merge conflict!}}\vskip1ex
 		Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-		\Item Übernimm den vorherigen Commit als deinen eigenen, leg ihn unter diese Karte. Diese beiden Commits gelten ab jetzt als einer.]{#1}%
+		\Item Übernimm den vorherigen Commit als deinen eigenen, leg ihn unter diese Karte. Diese beiden Commits gelten ab jetzt als einer.]{#1}{!}{bg-yellow}%
+}
+\newcommand\CardMergeRequest[1]{% Zahlwert
+	\CardFrontCommitPlus[%
+		\centerline{\rede{git push -- merge request!}}\vskip1ex
+		Mit diesem Commit \textit{bittest} du deinen Kollegen um ein Code Review, dass er natürlich auch durchführt:\vskip0.5ex
+		\Item Der nächsten Spieler muss einmal aussetzen.]{#1}{?}{paleblue}%
 }
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
 	\CalcNumberColor{#2}%
 	\CardFrontTikzBox{Issue: #1}{\DrawNumber}{numcolor}{%
-		\Item Für diese Lieferung müssen mindestens #2~Codezeilen erreicht werden.}%
+		\Item Für diese Lieferung müssen mindestens #2~Codezeilen erreicht werden.\\
+		\auxnum=#2 %
+		\divide\auxnum by 2 %
+		\Item Bei der Lieferung erhält der Auslieferer \number\auxnum~Zusatzpunkte.}%
 }
 \newcommand\CardBug[2][0.25\cardwidth]{% halbe Breite, Zahlwert
 	\CardFrontTikzBox[#1]{Issue: Bug}{%
@@ -255,62 +292,12 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \advance\auxdim by 3\cardlinewidth
 \newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
 
-\CardFrontSign{help}{?}{middlecolor}{%
-	\centerline{\rede{git help!}}\vskip0.5ex
-	Du weißt gerade nicht weiter und brauchst Hilfe:\vskip0.5ex
-	\Item Leg diese Karte auf den Abwurfstapel.\\
-	\Item Zieh drei Handkarten zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
-\CardFrontSign{status}{?}{nullcolor}{%
-	\centerline{\rede{git status!}}\vskip0.5ex
-	Du hast gerade keine Idee und brauchst erstmal einen Überblick:\vskip0.5ex
-	\Item Leg diese Karte auf den Abwurfstapel.\\
-	\Item Zieh eine Handkarte zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
-\CardFrontTikzBox{stash}{%
-	\begin{scope}[line width=2pt]
-		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
-		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
-	\end{scope}
-	}{magenta!65}{%
-	\centerline{\rede{git stash!}}\vskip0.5ex
-	\Item Leg bis zu zwei Handkarten vor Dir ab.\\
-	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
-
-\CardRelease%
-\CardRelease%
-\CardRelease%
-
-\CalcNumberColor{2}\CardFrontTikzCircle{rebase}{\DrawNumber}{magenta!65}{%
-	\centerline{\rede{git rebase!}}\vskip1ex
-	%todo%Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-	\Item Übernimm die vorherigen drei Commits als deine eigenen, leg die Karten unter diese. Alle diese Commits gelten ab jetzt als einer.}%
-\CardFrontTikzBox{cherry-pick}{}{white}{%
-	\centerline{\rede{git cherry-pick!}}\vskip1ex
-	todo}%
-\CardFrontTikzBox{}{}{white}{todo}%
-
-\clearpage
-\CardBack%
-\CardBack%
-\CardBack%
-
-\CardBack%
-\CardBack%
-\CardBack%
-
-\CardBack%
-\CardBack%
-\CardBack%
-
-
-
 \CardFrontCommit{1}%
 \CardFrontCommit{2}%
 \CardFrontCommit{3}%
-
 \CardFrontCommit{4}%
 \CardFrontCommit{5}%
 \CardFrontCommit{6}%
-
 \CardFrontCommit{7}%
 \CardFrontCommit{8}%
 \CardFrontCommit{10}%
@@ -319,25 +306,24 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardBack%
 \CardBack%
 \CardBack%
-
 \CardBack%
 \CardBack%
 \CardBack%
-
 \CardBack%
 \CardBack%
 \CardBack%
 
 
-
-\CardFrontCommit{2}%
-\CardFrontCommit{3}%
-\CardFrontCommit{4}%
 
 \CardMergeConflict{2}%
 \CardMergeConflict{3}%
 \CardMergeConflict{4}%
-
+%\CardFrontCommit{2}%
+%\CardFrontCommit{3}%
+%\CardFrontCommit{4}%
+\CardMergeRequest{2}%
+\CardMergeRequest{3}%
+\CardMergeRequest{4}%
 \CardRevert%
 \CardRevert%
 \CardRevert%
@@ -345,11 +331,9 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardBack%
 \CardBack%
 \CardBack%
-
 \CardBack%
 \CardBack%
 \CardBack%
-
 \CardBack%
 \CardBack%
 \CardBack%
@@ -359,23 +343,73 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardIssue{10}%
 \CardIssue{12}%
 \CardIssue{15}%
-
+\CardIssue{16}%
 \CardIssue{20}%
-\CardIssue{24}%
+%\CardIssue{24}%
 \CardIssue{30}%
-
 \CardBug{5}%
-\CardBug{8}%
+\CardBug{7}%
 \CardBug[0.275\cardwidth]{10}%
 
 \CardBack[bgcolor2]%
 \CardBack[bgcolor2]%
 \CardBack[bgcolor2]%
+\CardBack[bgcolor3]%
+\CardBack[bgcolor3]%
+\CardBack[bgcolor3]%
+\CardBack%
+\CardBack%
+\CardBack%
 
-\CardBack[bgcolor3]%
-\CardBack[bgcolor3]%
-\CardBack[bgcolor3]%
 
+
+\CardFrontSign{help}{?}{bg-green}{%
+	\centerline{\rede{git help!}}\vskip1ex
+	Du weißt gerade nicht weiter und brauchst Hilfe:\vskip0.5ex
+	\Item Leg diese Karte auf den Abwurfstapel.\\
+	\Item Zieh drei Handkarten zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
+\CardFrontSign{status}{?}{bg-yellow}{%
+	\centerline{\rede{git status!}}\vskip1ex
+	Du hast gerade keine Idee und brauchst erstmal einen Überblick:\vskip0.5ex
+	\Item Leg diese Karte auf den Abwurfstapel.\\
+	\Item Zieh eine Handkarte zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
+\CardFrontTikzBox{stash}{%
+	\begin{scope}[line width=2pt]
+		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
+		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
+	\end{scope}
+}{magenta!65}{%
+	\centerline{\rede{git stash!}}\vskip1ex
+	\Item Leg bis zu zwei Handkarten vor Dir ab.\\
+	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
+\CardRelease%
+\CardRelease%
+\CardRelease%
+\CardRelease%
+\CalcNumberColor{2}\CardFrontTikzCircle{rebase}{\DrawNumber}{magenta!65}{%
+	\centerline{\rede{git rebase!}}\vskip1ex
+	%todo%Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
+	\Item Übernimm die vorherigen drei Commits als deine eigenen, leg die Karten unter diese. Alle diese Commits gelten ab jetzt als einer.}%
+\CardFrontTikzBase{cherry-pick}{%
+		% Stiel
+		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
+		% Blatt
+%		\fill (aux)--+()
+		% Frucht
+		\shade[ball color=red!80!blue] (Center) circle[radius=0.1\cardwidth];
+%		\fill[red!80!blue] (Center) circle[radius=0.1\cardwidth];
+	}{%
+	\centerline{\rede{git cherry-pick!}}\vskip1ex
+	\Item \textrule{Stocke} zuerst deine Handkarten auf.\\
+	\Item Wähle dir danach bei einem beliebigen Spieler aus seinen Handkarten eine aus und füge sie deinen hinzu oder spiele sie sofort aus.}%
+%\CardFrontTikzBox{}{}{white}{todo}%
+
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
 \CardBack%
 \CardBack%
 \CardBack%
