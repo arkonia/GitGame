@@ -1,3 +1,4 @@
+% !TeX spellcheck = de_DE
 \documentclass[DIV=12]{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
 
@@ -27,6 +28,7 @@
 %\setsansfont{Linux Biolinum O}
 \newcommand\hugefont[1]{\raisebox{-5pt}{\fontsize{50}{60}\sffamily\bfseries\selectfont #1}}
 \newcommand\hugemathfont[1]{{\fontsize{40}{48}\sffamily\bfseries\selectfont #1}}
+\newcommand\biggerfont[1]{{\fontsize{30}{36}\sffamily\bfseries\selectfont #1}}
 \newcommand\bigfont[1]{{\fontsize{20}{24}\sffamily\bfseries\selectfont #1}}
 %\newcommand\textfontsize[1]{\fontsize{10}{12}\sffamily\selectfont #1}
 \newcommand\textfontsize[1]{\fontsize{9}{10}\sffamily\selectfont #1}
@@ -72,12 +74,14 @@
     \draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
-    \path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
+    \path (URex)--+(-\cardborder,-\cardborder) coordinate[midway] (URmed) coordinate (UR);
+    \coordinate (ULex) at (0,\cardheight);
     
     % innerer Rahmen
     \fill[bgcolor, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     
     \path (LL)|-(UR) coordinate[midway] (UL);
+    \path (UL)--(ULex) coordinate[midway] (ULmed);
     \path (LL)-|(UR) coordinate[midway] (LR);
 
     \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
@@ -105,7 +109,7 @@
 \colorlet{middlecolor}{bg-green}
 \colorlet{highcolor}{bg-blue}
 \newcommand\CardTextField[1]{% Text
-    \path (UCenter)+(0,-0.25\cardwidth-0.025\cardheight) node[anchor=north] {%
+    \path (UCenter)+(0,-0.25\cardwidth-0.015\cardheight) node[anchor=north] {%
 	\begin{minipage}{\cardtextwidth}
 		\textfontsize\rightskip0pt minus 0.25em
 		#1
@@ -122,6 +126,7 @@
 }
 \newcommand\CardFrontTikzCircle[4]{% Überschrift, Tikz-Graphik, Farbe, Text
 	\CardFrontTikzBase{#1}{%
+%		\draw[line width=1.5pt] (UCenter)+(-0.45\cardwidth,0)--+(0.45\cardwidth,0);
 		\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
 		#2}{#4}%
 }
@@ -207,16 +212,21 @@
 		\draw[fill=\one] (aux) circle[radius=1mm];
 	\fi
 }
+\newcommand\DrawNumberBorder{%
+	\ifnum\auxnum>0%\else
+		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north west] at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+	\fi
+}
 \newcommand\CardFrontCommit[2][\centering\rede{git push!}]{% Text, Zahlwert
 	\CalcNumberColor{#2}%
-	\CardFrontTikzCircle{commit}{\DrawNumber}{numcolor}{#1}%
+	\CardFrontTikzCircle{commit}{\DrawNumber\DrawNumberBorder}{numcolor}{#1}%
 }
-\newcommand\CardFrontCommitPlus[4][\centering\rede{git push!}]{% Text, Zahlwert, Ecksymbol, Eckfarbe
+\newcommand\CardFrontCommitPlus[4][\centering\rede{git push!}]{% Text, Zahlwert, Symbol, Farbe
 	\CalcNumberColor{#2}%
-	\CardFrontTikzCircle{commit}{%
-		\DrawNumber %
-		\node[draw, line width=1pt, fill=#4, circle, anchor=north west] at (UL) {\bigfont{#3}};%
-		\node[draw, line width=1.25pt, fill=#4, circle, anchor=north east] at (UR) {\bigfont{#3}};%
+	\CardFrontTikzCircle{commit}{\DrawNumber\DrawNumberBorder %
+		\draw[line width=1.25pt, rounded corners, fill=#4] (UCenter)++(30:0.275\cardwidth) coordinate (c)++(-90:0.0866\cardwidth)--++(0:0.15\cardwidth)--++(120:0.3\cardwidth)--++(-120:0.3\cardwidth)--cycle;
+		\node[anchor=center] at (c) {\biggerfont{#3}};
 	}{numcolor}{#1}%
 }
 \newcommand\CardFrontSign[4]{% Überschrift, Zeichen, Farbe, Text
@@ -232,7 +242,7 @@
 		\draw[line width=1.5pt, fill=bgcolor] (center)+(0.25\cardwidth,0) circle[radius=3mm];
 		\node at (center) {\bigfont{v\,1.x}};
 	}{%
-	\centerline{\rede{git tag und .\,.\,. Lieferung!}}\vskip0.5ex
+	\centerline{\rede{git tag .\,.\,. und Lieferung!}}\vskip0.5ex
 %	Ich beschließe, dass der aktuelle Stand ausgeliefert wird:
 	\Item Falls das Ziel erreicht ist, wertet alle Karten im Repo.\ aus und legt sie sowie die aktuellen Issues und alle Handkarten auf den Abwurfstapel.\\
 	\Item Leg diese Karte auf den Abwurfstapel und ziehe einen neuen CR.}%
@@ -278,7 +288,7 @@
 		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
 		}{errorcolor}{%
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
-		\Item Leg die Karte in der Mitte ab.
+		\Item Leg die Karte zum aktuellen CR.\\
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich erreicht werden.}%
 }
 
@@ -386,10 +396,10 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardRelease%
 \CardRelease%
 \CardRelease%
-\CardFrontCommit[%
+\CardFrontCommitPlus[%
 	\centerline{\rede{git push -- refactoring!}}\vskip1ex
 	%todo%Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-	\Item Übernimm die vorherigen drei Commits als deine eigenen, leg die Karten unter diese. Alle diese Commits gelten ab jetzt als einer.]{0}%
+	\Item Übernimm die vorherigen drei Commits als deine eigenen, leg die Karten unter diese. Alle diese Commits gelten ab jetzt als einer.]{0}{!}{errorcolor}%
 \CardFrontTikzBase{cherry-pick}{%
 		% Stiel
 		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
