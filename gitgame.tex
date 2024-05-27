@@ -191,11 +191,11 @@
 	\fi%
 	\auxnum=#1
 }
-\newcommand\DrawNumber{
+\newcommand\DrawNumber[1][]{
 	\ifnum\auxnum<0
-		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{X}};
+		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {#1\hugefont{X}};
 	\else
-		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {\hugefont{\number\auxnum}};
+		\path (UCenter)+(0,0.025\cardwidth) node[anchor=center] {#1\hugefont{\number\auxnum}};
 		\ifnum\auxnum<16
 			\path (UCenter)++(-0.09*\cardwidth,-0.125*\cardwidth) coordinate (aux);
 		\else
@@ -284,8 +284,10 @@
 		\Item Bei der Lieferung erhält der Auslieferer \number\auxnum~Zusatzpunkte.}%
 }
 \newcommand\CardBug[2][0.25\cardwidth]{% halbe Breite, Zahlwert
+	\auxnum=#2
 	\CardFrontTikzBox[#1]{Issue: Bug}{%
-		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
+%		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
+		\DrawNumber[\hugemathfont{+}\!]
 		}{errorcolor}{%
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
 		\Item Leg die Karte zum aktuellen CR.\\
