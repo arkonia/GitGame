@@ -23,6 +23,12 @@
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
 
+\newcommand\parendcentered{%
+	\leftskip=0pt plus 1fil
+	\rightskip=0pt plus -1fil minus 0.25em
+	\parfillskip=0pt plus 2fil
+}
+
 %\usepackage{fontspec}
 %\setmainfont{Linux Libertine O}
 %\setsansfont{Linux Biolinum O}
@@ -76,13 +82,17 @@
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate[midway] (URmed) coordinate (UR);
     \coordinate (ULex) at (0,\cardheight);
+    \coordinate (LRex) at (\cardwidth,0);
     
     % innerer Rahmen
     \fill[bgcolor, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     
+    \path (LL)-|(UR) coordinate[midway] (LR);
     \path (LL)|-(UR) coordinate[midway] (UL);
     \path (UL)--(ULex) coordinate[midway] (ULmed);
     \path (LL)-|(UR) coordinate[midway] (LR);
+    \path (LL)--(0,0) coordinate[midway] (LLmed);
+    \path (LR)--(LRex) coordinate[midway] (LRmed);
 
     \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
 	
@@ -216,12 +226,16 @@
 	\ifnum\auxnum>0%\else
 		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north west] at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
 		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north east, rotate=180] at (LLmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north west, rotate=180] at (LRmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
 	\fi
 }
 \newcommand\DrawNumberBorderBox[1][numcolor]{%
 	\ifnum\auxnum>0%\else
-	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west] at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
-	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west] at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east, rotate=180] at (LLmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+		\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west, rotate=180] at (LRmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
 	\fi
 }
 \newcommand\CardFrontCommit[2][\centering\rede{git push!}]{% Text, Zahlwert
@@ -273,6 +287,7 @@
 	\CardFrontCommitPlus[%
 		\centerline{\rede{git push -- merge conflict!}}\vskip1ex
 		Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
+		\parendcentered
 		\Item Übernimm den vorherigen Commit als deinen eigenen, leg ihn unter diese Karte. Diese beiden Commits gelten ab jetzt als einer.]{#1}{!}{bg-yellow}%
 }
 \newcommand\CardMergeRequest[1]{% Zahlwert
@@ -297,6 +312,7 @@
 		\DrawNumberBorderBox[errorcolor]
 		}{errorcolor}{%
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
+		\parendcentered
 		\Item Leg die Karte zum aktuellen CR.\\
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich erreicht werden.}%
 }
