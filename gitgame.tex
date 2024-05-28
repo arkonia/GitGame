@@ -218,6 +218,12 @@
 		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
 	\fi
 }
+\newcommand\DrawNumberBorderBox[1][numcolor]{%
+	\ifnum\auxnum>0%\else
+	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west] at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
+	\fi
+}
 \newcommand\CardFrontCommit[2][\centering\rede{git push!}]{% Text, Zahlwert
 	\CalcNumberColor{#2}%
 	\CardFrontTikzCircle{commit}{\DrawNumber\DrawNumberBorder}{numcolor}{#1}%
@@ -277,7 +283,7 @@
 }
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
 	\CalcNumberColor{#2}%
-	\CardFrontTikzBox{Issue: #1}{\DrawNumber}{numcolor}{%
+	\CardFrontTikzBox{Issue: #1}{\DrawNumber\DrawNumberBorderBox}{numcolor}{%
 		\Item Für diese Lieferung müssen mindestens #2~Codezeilen erreicht werden.\\
 		\auxnum=#2 %
 		\divide\auxnum by 2 %
@@ -288,6 +294,7 @@
 	\CardFrontTikzBox[#1]{Issue: Bug}{%
 %		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
 		\DrawNumber[\hugemathfont{+}\!]
+		\DrawNumberBorderBox[errorcolor]
 		}{errorcolor}{%
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
 		\Item Leg die Karte zum aktuellen CR.\\
