@@ -1,8 +1,8 @@
 % !TeX spellcheck = de_DE
-\documentclass[DIV=12]{scrartcl}
+\documentclass[DIV=15, fontsize=11pt]{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
 
-\usepackage{geometry}
+\usepackage[pass]{geometry}
 
 \usepackage[british, main=ngerman]{babel}
 \usepackage{xcolor}
@@ -19,11 +19,15 @@
 %	\special{dvipdfmx:config z 0}
 %\fi
 
+\usepackage{enumitem}
+\setlist{nolistsep}
+
 \setlength\parindent{0pt}
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
 
 \newcommand\parendcentered{%
+	\par
 	\leftskip=0pt plus 1fil
 	\rightskip=0pt plus -1fil minus 0.25em
 	\parfillskip=0pt plus 2fil
@@ -58,11 +62,11 @@
 \newcount\cardnum
 \cardnum=0
 \newcount\auxnum
-\newcommand\CardBack[1][green!20]{%
+\newcommand\CardBack[1][bgcolor1]{%
   \advance\cardnum by 1%
   \begin{tikzpicture}
 %	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
-	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
+	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
 	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
 	\fill[#1, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     \node at (Center) {\hugefont{git}};
@@ -107,6 +111,7 @@
   \fi
 }
 \colorlet{bgcolor}{gray!20}
+\colorlet{bgcolor1}{green!20}
 \colorlet{bgcolor2}{orange!25} % niedrige CRs
 \colorlet{bgcolor3}{red!20}% hohe CRs
 \colorlet{bg-green}{green!65}
@@ -280,8 +285,8 @@
 	}{warncolor}{%
 		\centerline{\rede{git revert!}}\vskip1ex
 		Der gerade geschriebene Code ist fehlerhaft und muss wieder weg:\vskip0.5ex
-		\Item Muss unmittelbar auf eine Zahlkarte folgen und negiert sie.\\
-		\Item Leg beide Karten auf den Abwurfstapel.}%
+		\Item Muss unmittelbar auf einen Commit folgen und negiert ihn.\\
+		\Item Leg diese Karte und den Commit auf den Abwurfstapel.}%
 }
 \newcommand\CardMergeConflict[1]{% Zahlwert
 	\CardFrontCommitPlus[%
@@ -317,8 +322,59 @@
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich erreicht werden.}%
 }
 
+\title{Git -- das Kartenspiel}
+\author{Philipp C.\ Müller}
+
 \begin{document}
-Ein Test für Sonderzeichen: ÄÖÜ äöü ß.
+
+\maketitle
+
+Die Spieler bilden ein Team agiler Software-Entwicklung. Ziel des Spiels ist es, möglichst viele der eigenen Codezeilen durchzubringen und die anderen Spieler dabei zu behindern.
+
+
+
+\section{Aufbau}\fboxsep=0pt
+Die Karten mit der \colorbox{bgcolor1}{grünliche Rückseite\strut} werden gut gemischt, jeder Spieler erhält drei davon auf die Hand, der Rest bildet den Zugstapel.
+
+Die Karten mit der \colorbox{bgcolor2}{rötlichen Rückseite\strut} werden auch gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie bildet das Ziel der ersten Spielrunde.
+
+%\CardFrontCommit{2}
+
+
+\section{Ablauf}
+Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Diese beginnen mit dem Aufdecken einer Issue-Karte, die das Ziel der Runde angibt, und Enden mit einer Lieferung. Dazwischen spielen alle Spieler reihum immer eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht.
+
+Es gibt drei Arten von Handkarten:
+\begin{itemize}
+	\item \textrule{Commit}-Karten werden am Remote Repository angelegt und müssen dann mit einem Marker markiert werden, damit man später weiß, wer welche Punkte bekommt. Ihr Zahlwert entspricht der Anzahl Codezeilen.
+	\item \textrule{Release}-Karten beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist.
+	\item Sonstige Karten werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
+\end{itemize}
+
+Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel.
+
+Am Ende des Zuges \textrule{stockt} man seine Handkarten wieder auf~(s.\,u.) und dann ist der nächste Spieler am Zug.
+
+Die Spielrunde ist beendet, sobald jemand eine Release-Karte ausspielt. Dann wird die aktuelle Runde \textrule{ausgewertet}~(s.\,u.) und danach beginnt die nächste Spielrunde mit dem Aufdecken der nächsten Issue-Karte oder das Spiel ist ganz beendet~(s.\,u.).
+
+
+\subsection{Aufstocken}
+Falls man am Ende seines Zuges weniger als drei Handkarten hat, zieht man neue Karten vom Zugstapel bis man wieder drei auf der Hand hat.
+
+
+\subsection{Auswerten}
+Sobald jemand eine Release-Karte ausspielt, wird eine neue Version der Software geliefert. D.\,h.\ die aktuelle Runde wird ausgewertet. Jeder Spieler erhält Punkte entsprechend der Codezeilen all seiner Commits im Remote Repository zwischen dem CR und der Lieferung. Der Spieler der Release-Karte erhält zusätzliche Punkte wie auf der Issue-Karte angegeben.
+
+TODO: Beispiel für eine Auswertung
+
+
+
+\section{Spielende}
+Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spiel mindestens 100~Punkte erreicht hat.
+
+Gewonnen hat dann der Spieler mit der höchsten Punktezahl.
+
+
 
 \vfill
 Es folgen die Seiten mit den Karten zum Ausdrucken.
@@ -326,6 +382,7 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \auxdim=3\cardwidth
 \advance\auxdim by 3\cardlinewidth
 \newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
+\cardnum=0
 
 \CardFrontCommit{1}%
 \CardFrontCommit{2}%
@@ -395,8 +452,9 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 	\end{scope}
 	}{magenta!65}{%
 	\centerline{\rede{git stash!}}\vskip1ex
-	\Item Leg bis zu zwei Handkarten vor Dir ab.\\
-	\Item Diese können weiterhin wie Handkarten ausgespielt werden, gehen aber bei einem Release nicht verloren.}%
+	\Item Leg bis zu zwei Handkarten vor Dir ab.
+	\parendcentered
+	\Item Diese können weiterhin wie Handkarten ausgespielt werden, zählen aber nicht beim \textrule{Austocken} mit und gehen bei einem Release nicht verloren.}%
 \CardFrontTikzBase{cherry-pick}{%
 		% Stiel
 		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
