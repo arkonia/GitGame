@@ -7,7 +7,7 @@
 \usepackage[british, main=ngerman]{babel}
 \usepackage{xcolor}
 \usepackage{tikz}
-
+\usetikzlibrary{shadows}
 
 \usepackage{enumitem}
 \setlist{nolistsep}
@@ -48,6 +48,22 @@
 \newcount\cardnum
 \cardnum=0
 \newcount\auxnum
+\newcommand\PlayerMarkerRound[2]{% Farbe, Zeichen
+	\begin{tikzpicture}
+		\draw[line width=1.5pt, fill=#1] (0,0) circle[radius=30pt] node {\hugefont{#2}};
+	\end{tikzpicture}%
+}
+\newcommand\PlayerMarkerSquare[2]{% Farbe, Zeichen
+	\begin{tikzpicture}
+		\draw[line width=1.5pt, fill=#1] (0,0) rectangle (60pt,60pt) node[midway] {\hugefont{#2}};
+	\end{tikzpicture}%
+}
+\newcommand\PlayerMarker[2]{% Farbe, Zeichen
+	\PlayerMarkerRound{#1}{#2}%
+}
+\newcommand\PlayerMarkerWithShadow[2]{% Farbe, Zeichen
+	\PlayerMarker{#1, circular drop shadow={shadow xshift=3pt, shadow yshift=3pt, shadow scale=1.2}}{#2}%
+}
 \newcommand\CardBack[1][bgcolor1]{%
   \advance\cardnum by 1%
   \begin{tikzpicture}
@@ -390,8 +406,63 @@ Gewonnen hat dann der Spieler mit der höchsten Punktezahl.
 
 
 
-\vfill
-Es folgen die Seiten mit den Karten zum Ausdrucken.
+\clearpage
+\section{Druckvorlagen}
+Diese und die folgenden Seiten sind zum Ausdrucken und Ausschneiden vorgesehen. Zum Drucken wird dickes Papier empfohlen, z.\,B. 160\,g-Papier. Die Karten sollten natürlich beidseitig ausgedruckt werden. Die Ränder links und rechts sind gleich breit, so dass Vorder- und Rückseite immer aufeinander treffen.
+
+Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren oder sonstige Chips, Münzen o.\,ä.\ zum markieren der ausgelegten Karten verwendet werden.
+
+\subsection*{Spielermarker}
+\PlayerMarker{errorcolor}{A}
+\PlayerMarker{errorcolor}{A}
+\PlayerMarker{errorcolor}{A}
+\PlayerMarker{errorcolor}{A}
+\PlayerMarker{errorcolor}{A}
+\PlayerMarker{errorcolor}{A}
+\PlayerMarker{errorcolor}{A}
+
+\PlayerMarker{warncolor}{B}
+\PlayerMarker{warncolor}{B}
+\PlayerMarker{warncolor}{B}
+\PlayerMarker{warncolor}{B}
+\PlayerMarker{warncolor}{B}
+\PlayerMarker{warncolor}{B}
+\PlayerMarker{warncolor}{B}
+
+\PlayerMarker{nullcolor}{C}
+\PlayerMarker{nullcolor}{C}
+\PlayerMarker{nullcolor}{C}
+\PlayerMarker{nullcolor}{C}
+\PlayerMarker{nullcolor}{C}
+\PlayerMarker{nullcolor}{C}
+\PlayerMarker{nullcolor}{C}
+
+\PlayerMarker{middlecolor}{D}
+\PlayerMarker{middlecolor}{D}
+\PlayerMarker{middlecolor}{D}
+\PlayerMarker{middlecolor}{D}
+\PlayerMarker{middlecolor}{D}
+\PlayerMarker{middlecolor}{D}
+\PlayerMarker{middlecolor}{D}
+
+\PlayerMarker{highcolor}{E}
+\PlayerMarker{highcolor}{E}
+\PlayerMarker{highcolor}{E}
+\PlayerMarker{highcolor}{E}
+\PlayerMarker{highcolor}{E}
+\PlayerMarker{highcolor}{E}
+\PlayerMarker{highcolor}{E}
+
+\PlayerMarker{oddcolor}{F}
+\PlayerMarker{oddcolor}{F}
+\PlayerMarker{oddcolor}{F}
+\PlayerMarker{oddcolor}{F}
+\PlayerMarker{oddcolor}{F}
+\PlayerMarker{oddcolor}{F}
+\PlayerMarker{oddcolor}{F}
+
+
+
 \newdimen\auxdim
 \auxdim=3\cardwidth
 \advance\auxdim by 3\cardlinewidth
