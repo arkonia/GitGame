@@ -53,6 +53,8 @@
 \cardheight=90mm
 \newdimen\cardborder
 \cardborder=5mm
+\newdimen\cardborderradius
+\cardborderradius=6mm
 \newdimen\cardtextwidth
 \cardtextwidth=\cardwidth
 \advance\cardtextwidth by -2.75\cardborder
@@ -68,7 +70,7 @@
 %	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
 	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
-	\fill[#1, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+	\fill[#1, rounded corners=\cardborderradius] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     \node at (Center) {\hugefont{git}};
   \end{tikzpicture}%
   \ifnum\cardnum>2
@@ -81,7 +83,7 @@
   \global\advance\cardnum by 1%
   \begin{tikzpicture}
   	% Schnittrahmen
-    \draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+    \draw[line width=\cardlinewidth, rounded corners=\cardborderradius, fill=white] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate[midway] (URmed) coordinate (UR);
@@ -89,7 +91,7 @@
     \coordinate (LRex) at (\cardwidth,0);
     
     % innerer Rahmen
-    \fill[bgcolor, rounded corners=\cardborder] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+    \fill[bgcolor, rounded corners=\cardborderradius] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
     
     \path (LL)-|(UR) coordinate[midway] (LR);
     \path (LL)|-(UR) coordinate[midway] (UL);
