@@ -110,19 +110,22 @@
 	\vskip-1pt
   \fi
 }
+
 \colorlet{bgcolor}{gray!20}
 \colorlet{bgcolor1}{green!20}
 \colorlet{bgcolor2}{orange!25} % niedrige CRs
 \colorlet{bgcolor3}{red!20}% hohe CRs
 \colorlet{bg-green}{green!65}
 \colorlet{bg-yellow}{yellow!75}
-\definecolor{bg-blue}{rgb}{0,0.5,1}
+\definecolor{bg-blue}{rgb}{0.25,0.55,1}
 \colorlet{paleblue}{cyan!35}
-\colorlet{errorcolor}{red!75}
+\colorlet{errorcolor}{red!65}
 \colorlet{warncolor}{orange!75}
 \colorlet{nullcolor}{bg-yellow}
 \colorlet{middlecolor}{bg-green}
 \colorlet{highcolor}{bg-blue}
+\colorlet{oddcolor}{magenta!65}
+
 \newcommand\CardTextField[1]{% Text
     \path (UCenter)+(0,-0.25\cardwidth-0.015\cardheight) node[anchor=north] {%
 	\begin{minipage}{\cardtextwidth}
@@ -450,7 +453,7 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
 		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
 	\end{scope}
-	}{magenta!65}{%
+	}{oddcolor}{%
 	\centerline{\rede{git stash!}}\vskip1ex
 	\Item Leg bis zu zwei Handkarten vor Dir ab.
 	\parendcentered
