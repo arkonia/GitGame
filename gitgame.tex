@@ -8,16 +8,6 @@
 \usepackage{xcolor}
 \usepackage{tikz}
 
-%\ifdefined\directlua
-%	\edef\pdfcompresslevel{\pdfvariable compresslevel}
-%	\edef\pdfobjcompresslevel{\pdfvariable objcompresslevel}
-%\fi
-%\ifdefined\pdfcompresslevel
-%	\pdfcompresslevel=0
-%	\pdfobjcompresslevel=0
-%\else
-%	\special{dvipdfmx:config z 0}
-%\fi
 
 \usepackage{enumitem}
 \setlist{nolistsep}
@@ -25,13 +15,6 @@
 \setlength\parindent{0pt}
 \setlength\parfillskip{1em plus 1fil}
 \setlength\parskip{0pt}
-
-\newcommand\parendcentered{%
-	\par
-	\leftskip=0pt plus 1fil
-	\rightskip=0pt plus -1fil minus 0.25em
-	\parfillskip=0pt plus 2fil
-}
 
 %\usepackage{fontspec}
 %\setmainfont{Linux Libertine O}
@@ -325,19 +308,18 @@
 	\CardFrontCommitPlus[%
 		\centerline{\rede{git push -- merge conflict!}}\vskip1ex
 		Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-		\parendcentered
-		\Item Übernimm den vorherigen Commit als deinen eigenen, leg ihn unter diese Karte. Diese beiden Commits gelten ab jetzt als einer.]{#1}{!}{bg-yellow}%
+		\Item Übernimm den vorherigen Commit als deinen eigenen. Schieb ihn unter diese Karte, diese beiden Commits gelten ab jetzt als einer.]{#1}{!}{bg-yellow}%
 }
 \newcommand\CardMergeRequest[1]{% Zahlwert
 	\CardFrontCommitPlus[%
 		\centerline{\rede{git push -- merge request!}}\vskip1ex
 		Mit diesem Commit \textit{bittest} du deinen Kollegen um ein Code Review, dass er natürlich auch durchführt:\vskip0.5ex
-		\Item Der nächsten Spieler muss einmal aussetzen.]{#1}{?}{paleblue}%
+		\Item Der nächsten Spieler muss ein Revert ausspielen oder einmal aussetzen.]{#1}{?}{paleblue}%
 }
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
 	\CalcNumberColor{#2}%
 	\CardFrontTikzBox{Issue: #1}{\DrawNumber\DrawNumberAtBorder}{numcolor}{%
-		\Item Für diese Lieferung müssen mindestens #2~Codezeilen erreicht werden.\\
+		\Item Für diese Lieferung müssen mindestens #2~Codezeilen geschrieben werden.\\
 		\auxnum=#2 %
 		\divide\auxnum by 2 %
 		\Item Bei der Lieferung erhält der Auslieferer \number\auxnum~Zusatzpunkte.}%
@@ -350,13 +332,12 @@
 		\DrawNumberAtBorder[errorcolor]
 		}{errorcolor}{%
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
-		\parendcentered
 		\Item Leg die Karte zum aktuellen CR.\\
-		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich erreicht werden.}%
+		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich geschrieben werden.}%
 }
 
 \title{Git -- das Kartenspiel}
-\author{Philipp C.\ Müller}
+\author{Philipp Müller}
 
 \begin{document}
 
@@ -440,12 +421,13 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 
 
 
+%
 \CardFrontCommit{10}%
 \CardFrontCommit{12}%
 \CardFrontCommitPlus[%
 \centerline{\rede{git push -- refactoring!}}\vskip1ex
 	%todo%Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-	\Item Übernimm die vorherigen drei Commits als deine eigenen, leg die Karten unter diese. Alle diese Commits gelten ab jetzt als einer.]{0}{!}{errorcolor}%
+	\Item Übernimm die vorherigen drei Commits als deine eigenen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.]{0}{!}{errorcolor}%
 \CardMergeConflict{2}%
 \CardMergeConflict{3}%
 \CardMergeConflict{4}%
@@ -453,6 +435,7 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 \CardMergeRequest{3}%
 \CardMergeRequest{4}%
 
+%
 \CardBack%
 \CardBack%
 \CardBack%
@@ -486,7 +469,6 @@ Es folgen die Seiten mit den Karten zum Ausdrucken.
 	}{oddcolor}{%
 	\centerline{\rede{git stash!}}\vskip1ex
 	\Item Leg bis zu zwei Handkarten vor Dir ab.
-	\parendcentered
 	\Item Diese können weiterhin wie Handkarten ausgespielt werden, zählen aber nicht beim \textrule{Austocken} mit und gehen bei einem Release nicht verloren.}%
 \CardFrontTikzBase{cherry-pick}{%
 		% Stiel
