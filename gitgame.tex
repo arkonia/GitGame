@@ -1,11 +1,14 @@
 % !TeX spellcheck = de_DE
 \documentclass[DIV=15, fontsize=11pt]{scrartcl}
 \setkomafont{sectioning}{\normalfont\bfseries\boldmath}
+\renewcommand*{\sectionformat}{\thesection~--~}
+\renewcommand*{\subsectionformat}{\thesubsection~--~}
 
 \usepackage[pass]{geometry}
 
 \usepackage[british, main=ngerman]{babel}
 \usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{shadows}
 
@@ -128,6 +131,7 @@
 \colorlet{highcolor}{bg-blue}
 \colorlet{oddcolor}{magenta!65}
 
+\newcommand\bgcolorbox[2]{\colorbox{#1}{#2\strut}}
 \newcommand\CardTextField[1]{% Text
     \path (UCenter)+(0,-0.25\cardwidth-0.015\cardheight) node[anchor=north] {%
 	\begin{minipage}{\cardtextwidth}
@@ -359,50 +363,94 @@
 
 \maketitle
 
-Die Spieler bilden ein Team agiler Software-Entwicklung. Ziel des Spiels ist es, möglichst viele der eigenen Codezeilen durchzubringen und die anderen Spieler dabei zu behindern.
+Dieses Spiel parodiert die agile Software-Entwicklung. Die Spieler bilden dabei ein Team von Entwicklern, die gemeinsam eine Software weiterentwickeln. Ziel des Spiels ist es jedoch, möglichst viele der eigenen Codezeilen durchzubringen und die anderen Spieler genau daran zu behindern.
 
 
 
 \section{Aufbau}\fboxsep=0pt
-Die Karten mit der \colorbox{bgcolor1}{grünliche Rückseite\strut} werden gut gemischt, jeder Spieler erhält drei davon auf die Hand, der Rest bildet den Zugstapel.
+Die Karten mit der \bgcolorbox{bgcolor1}{grünliche Rückseite} werden gut gemischt und bildet den Zugstapel. Jeder Spieler erhält drei davon auf die Hand, die sog.\ Handkarten. Diese entsprechen dem lokalen Git-\hskip0ptArbeitsverzeichnis des Spielers.
 
-Die Karten mit der \colorbox{bgcolor2}{rötlichen Rückseite\strut} werden auch gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie bildet das Ziel der ersten Spielrunde.
+Die Karten mit der \bgcolorbox{bgcolor2}{rötlichen Rückseite} werden auch gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie bildet das Ziel der ersten Spielrunde.
 
-%\CardFrontCommit{2}
 
 
 \section{Ablauf}
-Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Diese beginnen mit dem Aufdecken einer Issue-Karte, die das Ziel der Runde angibt, und Enden mit einer Lieferung. Dazwischen spielen alle Spieler reihum immer eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht.
+Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Sie beginnen mit dem Aufdecken einer \bgcolorbox{bgcolor2}{Issue-Karte}, die das Ziel der Runde angibt, und Enden mit einer Lieferung. Dazwischen spielen alle Spieler reihum immer genau eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht.
 
-Es gibt drei Arten von Handkarten:
+Es gibt drei Arten von \bgcolorbox{bgcolor1}{Handkarten}:
 \begin{itemize}
-	\item \textrule{Commit}-Karten werden am Remote Repository angelegt und müssen dann mit einem Marker markiert werden, damit man später weiß, wer welche Punkte bekommt. Ihr Zahlwert entspricht der Anzahl Codezeilen.
-	\item \textrule{Release}-Karten beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist.
+	\item \textrule{Commit}-Karten werden ausgelegt und müssen dann mit einem Spielermarker markiert werden, damit man später weiß, wer welche Punkte bekommt. Ihr Zahlwert entspricht der Anzahl Codezeilen. Die Reihe der ausgelegten Commit-Karten entsprechen dem Remote Repository von Git.
+	\item \textrule{Release}-Karten beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.~\ref{auswerten}). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist, d.\,h.\ wenn die Summe der ausgelegten Zahlwerte dem Wert der Issue-Karte entspricht oder diesen übertrifft.
 	\item Sonstige Karten werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
 \end{itemize}
 
-Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel.
+Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand an der Reihe ist und keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel.
 
-Am Ende des Zuges \textrule{stockt} man seine Handkarten wieder auf~(s.\,u.) und dann ist der nächste Spieler am Zug.
+Am Ende des Zuges \textrule{stockt} man seine Handkarten wieder auf~(s.\,u.~\ref{aufstocken}) und dann ist der nächste Spieler an der Reihe.
 
-Die Spielrunde ist beendet, sobald jemand eine Release-Karte ausspielt. Dann wird die aktuelle Runde \textrule{ausgewertet}~(s.\,u.) und danach beginnt die nächste Spielrunde mit dem Aufdecken der nächsten Issue-Karte oder das Spiel ist ganz beendet~(s.\,u.).
+Die Spielrunde ist beendet, sobald jemand eine Release-Karte ausspielt. Dann wird die aktuelle Runde \textrule{ausgewertet}~(s.\,u.~\ref{auswerten}) und danach beginnt die nächste Spielrunde mit dem Aufdecken der nächsten Issue-Karte oder das Spiel ist ganz beendet~(s.\,u.~\ref{ende}).
 
 
-\subsection{Aufstocken}
+\subsection{Aufstocken\label{aufstocken}}
 Falls man am Ende seines Zuges weniger als drei Handkarten hat, zieht man neue Karten vom Zugstapel bis man wieder drei auf der Hand hat.
 
 
-\subsection{Auswerten}
-Sobald jemand eine Release-Karte ausspielt, wird eine neue Version der Software geliefert. D.\,h.\ die aktuelle Runde wird ausgewertet. Jeder Spieler erhält Punkte entsprechend der Codezeilen all seiner Commits im Remote Repository zwischen dem CR und der Lieferung. Der Spieler der Release-Karte erhält zusätzliche Punkte wie auf der Issue-Karte angegeben.
+\subsection{Auswerten\label{auswerten}}
+Sobald jemand eine Release-Karte ausspielt, wird eine neue Version der Software geliefert. D.\,h.\ die aktuelle Runde wird ausgewertet. Jeder Spieler erhält Punkte entsprechend der Codezeilen all seiner Commits im Remote Repository, also zwischen Issue und Lieferung. Der Spieler der Release-Karte erhält zusätzliche Punkte wie auf der Issue-Karte angegeben.
 
-TODO: Beispiel für eine Auswertung
+Nach der Auswertung werden alle ausgelegten und alle Handkarten abgeworfen. Jetzt können die Karten neu gemischt werden. Danach wird eine neue Issue-Karte ausgelegt und jeder Spieler erhält wieder drei Handkarten. Der Spieler nach dem Spieler, der die Release-Karte ausgespielt hat, beginnt die neue Runde.
+
+
+\subsubsection*{Beispiel für eine Auswertung}
+Das Remote Repository (die ausgelegten Karten) sieht folgendermaßen aus:
+
+\begin{center}
+\scalebox{0.5}{
+\CardIssue{12}
+\hskip1em
+\CardFrontCommit{5}
+\hskip-0.4\cardwidth
+\clap{\raisebox{-0.05\cardwidth}{\PlayerMarkerWithShadow{errorcolor}{A}}}
+\hskip0.4\cardwidth
+\hskip1em
+\cardnum=0
+\CardFrontCommit{7}
+\hskip-0.8\cardwidth
+\raisebox{-0.05\cardwidth}{\CardMergeConflict{3}}
+\hskip-0.65\cardwidth
+\clap{\raisebox{0.05\cardwidth}{\PlayerMarkerWithShadow{nullcolor}{C}}}
+\hskip0.65\cardwidth
+\hskip1em
+\cardnum=0
+\CardRelease
+}
+\end{center}
+
+Spieler~A hat die Release-Karte ausgespielt.
+\begin{itemize}
+	\item Spieler~A erhält 11~Punkte: Zahlkarte~5 plus 6~Extrapunkte fürs Release.
+	\item Spieler~B erhält 0~Punkte: Seine Zahlkarte~7 wurde von Spieler~C geklaut!
+	\item Spieler~C erhält 10~Punkte: Zahlkarte~7 und Zahlkarte~3 (Merge Conflict).
+\end{itemize}
+
+Die Punkte sollten in einer kleinen Tabelle aufgeschrieben werden:
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+	Runde & A & B & C \\
+	\hline
+	v\,1 & 11 & 0 & 10 \\
+	\hline
+	v\,2 &  & & \\
+	\hline
+	v\,3 &  & & \\
+\end{tabular}
+\end{center}
 
 
 
-\section{Spielende}
-Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spiel mindestens 100~Punkte erreicht hat.
-
-Gewonnen hat dann der Spieler mit der höchsten Punktezahl.
+\section{Spielende\label{ende}}
+Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spiel mindestens 100~Punkte erreicht hat. Gewonnen hat dann selbstverständlich der Spieler mit der höchsten Punktezahl.
 
 
 
