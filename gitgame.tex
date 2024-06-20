@@ -156,6 +156,7 @@
 \colorlet{nullcolor}{bg-yellow}
 \colorlet{middlecolor}{bg-green}
 \colorlet{highcolor}{bg-blue}
+\colorlet{cherrycolor}{red!80!blue}
 \colorlet{oddcolor}{magenta!65}
 
 \newcommand\bgcolorbox[2]{\colorbox{#1}{#2\strut}}
@@ -177,7 +178,9 @@
 }
 \newcommand\CardFrontTikzCircle[4]{% Überschrift, Tikz-Graphik, Farbe, Text
 	\CardFrontTikzBase{#1}{%
-%		\draw[line width=1.5pt] (UCenter)+(-0.45\cardwidth,0)--+(0.45\cardwidth,0);
+		% Linie
+		\draw[line width=2pt] (UCenter)+(-0.45\cardwidth,0)--+(0.45\cardwidth,0);
+		% Kreis
 		\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
 		#2}{#4}%
 }
@@ -272,15 +275,24 @@
 %		\node[draw, line width=1pt, fill=numcolor, circle, inner sep=0pt, anchor=north west, rotate=180] at (LRmed) {\hphantom{\bigfont{0}}\clap{\bigfont{\number\auxnum}}\hphantom{\bigfont{0}}};%
 	\fi
 }
-\newcommand\DrawSignAtBorder[2][numcolor]{% Farbe, Symbol
-	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west] at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{#2}}\hphantom{\bigfont{0}}};%
-	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east] at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{#2}}\hphantom{\bigfont{0}}};%
+\newcommand\DrawTextAtBorders[2][numcolor]{% Farbe, Text
+	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west] (ULsign) at (ULmed) {\hphantom{\bigfont{0}}\clap{\bigfont{#2}}\hphantom{\bigfont{0}}};%
+	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east] (URsign) at (URmed) {\hphantom{\bigfont{0}}\clap{\bigfont{#2}}\hphantom{\bigfont{0}}};%
 %	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north east, rotate=180] at (LLmed) {\hphantom{\bigfont{0}}\clap{\bigfont{#2}}\hphantom{\bigfont{0}}};%
 %	\node[draw, line width=1pt, fill=#1, rectangle, rounded corners, inner sep=1pt, minimum height=20pt, anchor=north west, rotate=180] at (LRmed) {\hphantom{\bigfont{0}}\clap{\bigfont{#2}}\hphantom{\bigfont{0}}};%
 }
+\newcommand\DrawSignAtBorders[2]{% Farbe, tikz-Graphik
+	\DrawTextAtBorders[#1]{}
+	\begin{scope}[shift={(ULsign)}]
+		#2
+	\end{scope}
+	\begin{scope}[shift={(URsign)}]
+		#2
+	\end{scope}
+}
 \newcommand\DrawNumberAtBorder[1][numcolor]{% Farbe
 	\ifnum\auxnum<0\else%
-		\DrawSignAtBorder[#1]{\number\auxnum}
+		\DrawTextAtBorders[#1]{\number\auxnum}
 	\fi
 }
 \newcommand\CardFrontCommit[2][\centering\rede{git push!}]{% Text, Zahlwert
@@ -299,13 +311,13 @@
 		\node[anchor=center] at (c) {\subbigfont{#3}};
 	}{numcolor}{#1}%
 }
-\newcommand\CardFrontSign[4]{% Überschrift, Zeichen, Farbe, Text
-	\CardFrontTikzBox{#1}{%
+\newcommand\CardFrontSign[5][\empty]{% [Eckzeichen], Überschrift, Zeichen, Farbe, Text
+	\CardFrontTikzBox{#2}{%
 		% Mitte
-		\path (UCenter) node[anchor=center] {\hugefont{#2}};
+		\path (UCenter) node[anchor=center] {\hugefont{#3}};
 		% Ecken: TODO
-		\DrawSignAtBorder[#3]{#2}
-	}{#3}{#4}%
+		\DrawTextAtBorders[#4]{\ifx\empty#1#3\else#1\fi}
+	}{#4}{#5}%
 }
 
 \newcommand\tagnode[3][line width=1pt]{% scale, position
@@ -344,7 +356,12 @@
 			\draw (A)--(B);
 			\draw[->] (A)..controls +(-0.2\cardwidth,0) and +(-0.2\cardwidth,0)..(B);
 		\end{scope}
-		% Ecken: TODO
+		% Ecken:
+		\DrawSignAtBorders{warncolor}{%
+		\begin{scope}[line width=1pt]
+			\draw[-latex] (0,-0.03\cardwidth)--++(0.02\cardwidth,0) arc (-90:90:0.025\cardwidth)--++(-0.07\cardwidth,0);
+		\end{scope}
+		}
 	}{warncolor}{%
 		\centerline{\rede{git revert!}}\vskip1ex
 		Der gerade geschriebene Code ist fehlerhaft und muss wieder weg:\vskip0.5ex
@@ -600,7 +617,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardRevert%
 \CardRevert%
 \CardRevert%
-\CardFrontSign{help}{?}{bg-green}{%
+\CardFrontSign[??]{help}{???}{bg-green}{%
 	\centerline{\rede{git help!}}\vskip1ex
 	Du weißt gerade nicht weiter und brauchst Hilfe:\vskip0.5ex
 	\Item Leg diese Karte auf den Abwurfstapel.\\
@@ -611,10 +628,16 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 	\Item Leg diese Karte auf den Abwurfstapel.\\
 	\Item Zieh eine Handkarte zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
 \CardFrontTikzBox{stash}{%
+	% Mitte
 	\begin{scope}[line width=2pt]
 		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
 		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
 	\end{scope}
+	% Ecken
+	\DrawSignAtBorders{oddcolor}{%
+		\draw[fill=gray, line width=1pt] (0,0)+(-0.05\cardwidth,0) rectangle +(0.05\cardwidth,-0.025\cardheight);
+		\fill (0,0)--++(0.02\cardwidth,0.03\cardheight)--++(-0.04\cardwidth,0);
+	}
 	}{oddcolor}{%
 	\centerline{\rede{git stash!}}\vskip1ex
 	\Item Leg bis zu zwei Handkarten vor Dir ab.
@@ -622,11 +645,15 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardFrontTikzBase{cherry-pick}{%
 		% Stiel
 		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
-		% Blatt
+		% Blatt TODO
 %		\fill (aux)--+()
 		% Frucht
-		\shade[ball color=red!80!blue] (Center) circle[radius=0.1\cardwidth];
-%		\fill[red!80!blue] (Center) circle[radius=0.1\cardwidth];
+		\shade[ball color=cherrycolor] (Center) circle[radius=0.1\cardwidth];
+%		\fill[cherrycolor] (Center) circle[radius=0.1\cardwidth];
+		% Ecken
+		\DrawSignAtBorders{white}{%
+			\shade[ball color=cherrycolor] (0,0) circle[radius=0.04\cardwidth];
+		}
 	}{%
 	\centerline{\rede{git cherry-pick!}}\vskip1ex
 	\Item \textrule{Stocke} zuerst deine Handkarten auf.\\
