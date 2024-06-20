@@ -67,10 +67,27 @@
 \newcommand\PlayerMarkerWithShadow[2]{% Farbe, Zeichen
 	\PlayerMarker{#1, circular drop shadow={shadow xshift=3pt, shadow yshift=3pt, shadow scale=1.2}}{#2}%
 }
+\newif\ifschnittmarken
+\schnittmarkenfalse
+\newcommand\Schnittmarken{%
+	\auxdim=\cardwidth
+	\advance\auxdim by -0.5\cardlinewidth
+	\hbox to 0pt{\vbox to 0pt{\vskip-10mm%
+		\hskip-10mm\vrule height \cardlinewidth width 10mm%
+		\vrule height 10mm width \cardlinewidth
+		\hskip\auxdim%
+		\vrule height 10mm width \cardlinewidth\hskip\cardwidth%
+		\vrule height 10mm width \cardlinewidth\hskip\auxdim%
+		\vrule height 10mm width \cardlinewidth%
+		\vrule height \cardlinewidth width 10mm%
+	}}%
+	\vskip-0.5\cardlinewidth
+	\schnittmarkentrue
+}
 \newcommand\CardBack[1][bgcolor1]{%
   \advance\cardnum by 1%
   \begin{tikzpicture}
-%	\draw[line width=\cardlinewidth, rounded corners=5mm] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
+%	\draw[line width=\cardlinewidth, rounded corners=\cardborderradius] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
 	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
 	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
 	\fill[#1, rounded corners=\cardborderradius] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
@@ -83,6 +100,12 @@
   \fi
 }
 \newenvironment{CardFront}[1]{%
+  \ifnum\cardnum=0%
+    \ifschnittmarken%
+      \vskip-0.5\cardlinewidth%
+      \leavevmode\llap{\vrule width 10mm height 0.5\cardlinewidth depth 0.5\cardlinewidth}%
+    \fi%
+  \fi%
   \global\advance\cardnum by 1%
   \begin{tikzpicture}
   	% Schnittrahmen
@@ -110,6 +133,9 @@
 }{
   \end{tikzpicture}%
   \ifnum\cardnum>2
+    \ifschnittmarken%
+      \rlap{\vrule width 10mm height 0.5\cardlinewidth depth 0.5\cardlinewidth}%
+    \fi%
 	\global\cardnum=0
 
 	\vskip-1pt
@@ -515,8 +541,9 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \auxdim=3\cardwidth
 \advance\auxdim by 3\cardlinewidth
 \newgeometry{top=10mm,bottom=10mm,textwidth=\auxdim}
+\Schnittmarken%
 \cardnum=0
-
+%
 \CardFrontCommit{1}%
 \CardFrontCommit{2}%
 \CardFrontCommit{3}%
@@ -528,6 +555,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardFrontCommit{9}%
 
 %\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
+%
 \CardBack%
 \CardBack%
 \CardBack%
@@ -540,6 +568,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 
+\Schnittmarken
 %
 \CardFrontCommit{10}%
 \CardFrontCommit{12}%
@@ -554,7 +583,6 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardMergeRequest{3}%
 \CardMergeRequest{4}%
 
-%
 \CardBack%
 \CardBack%
 \CardBack%
@@ -567,6 +595,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 
+\Schnittmarken
 \CardRevert%
 \CardRevert%
 \CardRevert%
@@ -616,6 +645,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 
+\Schnittmarken
 \CardRelease%
 \CardRelease%
 \CardRelease%
@@ -638,6 +668,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 
+\Schnittmarken
 \CardIssue{10}%
 \CardIssue{12}%
 \CardIssue{15}%
