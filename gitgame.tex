@@ -315,7 +315,7 @@
 	\CardFrontTikzBox{#2}{%
 		% Mitte
 		\path (UCenter) node[anchor=center] {\hugefont{#3}};
-		% Ecken: TODO
+		% Ecken
 		\DrawTextAtBorders[#4]{\ifx\empty#1#3\else#1\fi}
 	}{#4}{#5}%
 }
@@ -645,7 +645,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardFrontTikzBase{cherry-pick}{%
 		% Stiel
 		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
-		% Blatt TODO
+		% Blatt: TODO
 %		\fill (aux)--+()
 		% Frucht
 		\shade[ball color=cherrycolor] (Center) circle[radius=0.1\cardwidth];
