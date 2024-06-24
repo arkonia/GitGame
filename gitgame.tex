@@ -78,47 +78,71 @@
 \schnittmarkenfalse
 \newcommand\Schnittmarken{%
 	\clearpage
-	\auxdim=\cardwidth
-	\advance\auxdim by -0.5\cardlinewidth
-	\hbox to 0pt{\vbox to 0pt{\vskip-10mm%
-		\hskip-10mm\vrule height \cardlinewidth width 10mm%
-		\vrule height 10mm width \cardlinewidth
-		\hskip\auxdim%
-		\vrule height 10mm width \cardlinewidth\hskip\cardwidth%
-		\vrule height 10mm width \cardlinewidth\hskip\auxdim%
-		\vrule height 10mm width \cardlinewidth%
-		\vrule height \cardlinewidth width 10mm%
-	}}%
-	\vskip-0.5\cardlinewidth
 	\schnittmarkentrue
+	\auxdim=\cardwidth
+	\advance\auxdim by \cardlinewidth
+	\hbox to 0pt{\vbox to 0pt{\vskip-0.5\cardborderradius% oben
+		\kern-0.5\cardlinewidth\vrule width \cardlinewidth height 0.5\cardborderradius depth 0.5\cardborderradius%
+		\kern-0.5\cardlinewidth\kern-0.5\cardborderradius%
+		\vrule width \cardborderradius height 0.5\cardlinewidth depth 0.5\cardlinewidth%
+		\kern-0.5\cardborderradius%
+	\kern\auxdim%
+		\kern-0.5\cardlinewidth\vrule width \cardlinewidth height 0.5\cardborderradius depth 0.5\cardborderradius%
+		\kern-0.5\cardlinewidth\kern-0.5\cardborderradius%
+		\vrule width \cardborderradius height 0.5\cardlinewidth depth 0.5\cardlinewidth%
+		\kern-0.5\cardborderradius%
+	\kern\auxdim%
+		\kern-0.5\cardlinewidth\vrule width \cardlinewidth height 0.5\cardborderradius depth 0.5\cardborderradius%
+		\kern-0.5\cardlinewidth\kern-0.5\cardborderradius%
+		\vrule width \cardborderradius height 0.5\cardlinewidth depth 0.5\cardlinewidth%
+		\kern-0.5\cardborderradius%
+	\kern\auxdim%
+		\kern-0.5\cardlinewidth\vrule width \cardlinewidth height 0.5\cardborderradius depth 0.5\cardborderradius%
+		\kern-0.5\cardlinewidth\kern-0.5\cardborderradius%
+		\vrule width \cardborderradius height 0.5\cardlinewidth depth 0.5\cardlinewidth%
+		\kern-0.5\cardborderradius%
+	\vskip0.5\cardborderradius
+	}}%
+}
+\newenvironment{CardBase}{%
+	\ifschnittmarken% unten links
+		\kern-0.5\cardlinewidth\vrule width \cardlinewidth height 0.5\cardborderradius depth 0.5\cardborderradius%
+		\kern-0.5\cardlinewidth\kern-0.5\cardborderradius%
+		\vrule width \cardborderradius height 0.5\cardlinewidth depth 0.5\cardlinewidth%
+		\kern-0.5\cardborderradius%
+		\fi%
+	\global\advance\cardnum by 1%
+	\begin{tikzpicture}
+		\coordinate (URex) at (\cardwidth,\cardheight);
+		\ifschnittmarken\else%
+			% Rahmen
+			\draw[line width=\cardlinewidth, rounded corners=\cardborderradius, fill=white] (0,0) rectangle (URex);
+		\fi
+}{%
+	\end{tikzpicture}%
+	\ifnum\cardnum>2
+		\ifschnittmarken% unten rechts
+		\kern-0.5\cardlinewidth\vrule width \cardlinewidth height 0.5\cardborderradius depth 0.5\cardborderradius%
+		\kern-0.5\cardlinewidth\kern-0.5\cardborderradius%
+		\vrule width \cardborderradius height 0.5\cardlinewidth depth 0.5\cardlinewidth%
+		\kern-0.5\cardborderradius%
+		\vskip-0.5\cardborderradius
+	\fi%
+	\global\cardnum=0
+
+	\vskip-1pt
+	\fi%
 }
 \newcommand\CardBack[1][bgcolor1]{%
-  \advance\cardnum by 1%
-  \begin{tikzpicture}
-%	\draw[line width=\cardlinewidth, rounded corners=\cardborderradius] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
-	\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
-	\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
-	\fill[#1, rounded corners=\cardborderradius] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
-    \node at (Center) {\hugefont{git}};
-  \end{tikzpicture}%
-  \ifnum\cardnum>2
-  	\cardnum=0
-  
-  	\vskip-1pt
-  \fi
+	\begin{CardBase}
+		\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
+		\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
+		\fill[#1, rounded corners=\cardborderradius] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
+	    \node at (Center) {\hugefont{git}};
+	\end{CardBase}%
 }
 \newenvironment{CardFront}[1]{%
-  \ifnum\cardnum=0%
-    \ifschnittmarken%
-      \vskip-0.5\cardlinewidth%
-      \leavevmode\llap{\vrule width 10mm height 0.5\cardlinewidth depth 0.5\cardlinewidth}%
-    \fi%
-  \fi%
-  \global\advance\cardnum by 1%
-  \begin{tikzpicture}
-  	% Schnittrahmen
-    \draw[line width=\cardlinewidth, rounded corners=\cardborderradius, fill=white] (0,0) rectangle (\cardwidth,\cardheight) coordinate (URex);
-
+  \begin{CardBase}
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
     \path (URex)--+(-\cardborder,-\cardborder) coordinate[midway] (URmed) coordinate (UR);
     \coordinate (ULex) at (0,\cardheight);
@@ -139,15 +163,7 @@
 	% Überschrift
 	\path (UCenter)+(0,0.25\cardheight) node {\bigfont{#1}};
 }{
-  \end{tikzpicture}%
-  \ifnum\cardnum>2
-    \ifschnittmarken%
-      \rlap{\vrule width 10mm height 0.5\cardlinewidth depth 0.5\cardlinewidth}%
-    \fi%
-	\global\cardnum=0
-
-	\vskip-1pt
-  \fi
+  \end{CardBase}%
 }
 
 \colorlet{bgcolor}{gray!20}
@@ -581,6 +597,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 %\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
 %
+\Schnittmarken
 \CardBack%
 \CardBack%
 \CardBack%
@@ -594,7 +611,6 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 \Schnittmarken
-%
 \CardFrontCommit{10}%
 \CardFrontCommit{12}%
 \CardFrontCommitPlus[%
@@ -608,6 +624,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardMergeRequest{3}%
 \CardMergeRequest{4}%
 
+\Schnittmarken
 \CardBack%
 \CardBack%
 \CardBack%
@@ -672,6 +689,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardMergeRequest{5}
 \CardRevert
 
+\Schnittmarken
 \CardBack%
 \CardBack%
 \CardBack%
@@ -695,6 +713,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardBug{8}%
 \CardBug[0.275\cardwidth]{10}%
 
+\Schnittmarken
 \CardBack%
 \CardBack%
 \CardBack%
@@ -718,6 +737,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardIssue{30}%
 \CardIssue{32}%
 
+\Schnittmarken
 \CardBack[bgcolor2]%
 \CardBack[bgcolor2]%
 \CardBack[bgcolor2]%
