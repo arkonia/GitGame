@@ -422,6 +422,26 @@
 		\Item Leg die Karte zum aktuellen CR.\\
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich geschrieben werden.}%
 }
+\newcommand\CardCherryPick{%
+	\CardFrontTikzBase{cherry-pick}{%
+		% Stiel
+		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
+		% Blatt TODO
+		%\fill (aux)--+()
+		% Frucht
+		%\shade[ball color=cherrycolor] (Center) circle[radius=0.1\cardwidth];
+		\fill[cherrycolor] (Center) circle[radius=0.1\cardwidth];
+		% Ecken
+		\DrawSignAtBorders{white}{%
+			%\shade[ball color=cherrycolor] (0,0) circle[radius=0.04\cardwidth];
+			\fill[cherrycolor] (0,0) circle[radius=0.04\cardwidth];
+		}
+	
+	}{%
+		\centerline{\rede{git cherry-pick!}}\vskip1ex
+		\Item \textrule{Stocke} zuerst deine Handkarten auf.\\
+		\Item Wähle dir danach bei einem beliebigen Spieler aus seinen Handkarten eine aus und füge sie deinen hinzu oder spiele sie sofort aus.}%
+}
 
 \title{Git -- das Kartenspiel}
 \author{Philipp Müller}
@@ -667,23 +687,7 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 	\Item Leg bis zu zwei Handkarten verdeckt vor Dir ab.
 	\parendcentered
 	\Item Sie können weiterhin wie Handkarten ausgespielt werden, zählen aber nicht beim \textrule{Aufstocken} mit und gehen bei einem Release nicht verloren.}%
-\CardFrontTikzBase{cherry-pick}{%
-		% Stiel
-		\draw[line width=3pt,green!50!black] (Center)..controls+(0,0.3\cardwidth)..+(0.2\cardwidth,0.35\cardwidth) coordinate[pos=0.8] (aux);
-		% Blatt: TODO
-%		\fill (aux)--+()
-		% Frucht
-		\shade[ball color=cherrycolor] (Center) circle[radius=0.1\cardwidth];
-%		\fill[cherrycolor] (Center) circle[radius=0.1\cardwidth];
-		% Ecken
-		\DrawSignAtBorders{white}{%
-			\shade[ball color=cherrycolor] (0,0) circle[radius=0.04\cardwidth];
-%			\fill[cherrycolor] (0,0) circle[radius=0.04\cardwidth];
-		}
-	}{%
-	\centerline{\rede{git cherry-pick!}}\vskip1ex
-	\Item \textrule{Stocke} zuerst deine Handkarten auf.\\
-	\Item Wähle dir danach bei einem beliebigen Spieler aus seinen Handkarten eine aus und füge sie deinen hinzu oder spiele sie sofort aus.}%
+\CardCherryPick%
 %\CardFrontTikzBox{}{}{white}{todo}%
 %\CardFrontTikzBox{}{}{white}{todo}%
 \CardMergeRequest{5}
@@ -747,5 +751,30 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \CardBack[bgcolor2]%[bgcolor3]%
 \CardBack[bgcolor2]%[bgcolor3]%
 \CardBack[bgcolor2]%[bgcolor3]%
+
+
+
+% Zusatzkarten
+\Schnittmarken
+\CardFrontCommit{3}%
+\CardFrontCommit{4}%
+\CardFrontCommit{5}%
+\CardFrontCommit{6}%
+\CardFrontCommit{7}%
+\CardFrontCommit{8}%
+\CardMergeConflict{1}%
+\CardRevert%
+\CardCherryPick%
+
+\Schnittmarken
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
 
 \end{document}
