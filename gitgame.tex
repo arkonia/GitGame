@@ -322,17 +322,17 @@
 	\CalcNumberColor{#2}%
 	\CardFrontTikzCircle{commit}{\DrawNumber\DrawNumberBorder}{numcolor}{#1}%
 }
-\newcommand\CardFrontCommitPlus[4][\centering\rede{git push!}]{% Text, Zahlwert, Symbol, Farbe
-	\CalcNumberColor{#2}%
-	\CardFrontTikzCircle{commit}{\DrawNumber\DrawNumberBorder %
-%		\draw[line width=1.25pt, rounded corners, fill=#4] (UCenter)++(30:0.275\cardwidth) coordinate (c)++(-90:0.0866\cardwidth)--++(0:0.15\cardwidth)--++(120:0.3\cardwidth)--++(-120:0.3\cardwidth)--cycle;
-%		\node[anchor=center] at (c) {\biggerfont{#3}};
-		\draw[line width=1pt, rounded corners, fill=#4] (ULborder.south)++(0,-0.035\cardheight) coordinate (c)++(-90:0.0433\cardwidth)--++(0:0.075\cardwidth)--++(120:0.15\cardwidth)--++(-120:0.15\cardwidth)--cycle;
-		\node[anchor=center] at (c) {\subbigfont{#3}};
+\newcommand\CardFrontCommitPlus[5][commit]{% Titel, Text, Zahlwert, Symbol, Farbe
+	\CalcNumberColor{#3}%
+	\CardFrontTikzCircle{#1}{\DrawNumber\DrawNumberBorder %
+%		\draw[line width=1.25pt, rounded corners, fill=#5] (UCenter)++(30:0.275\cardwidth) coordinate (c)++(-90:0.0866\cardwidth)--++(0:0.15\cardwidth)--++(120:0.3\cardwidth)--++(-120:0.3\cardwidth)--cycle;
+%		\node[anchor=center] at (c) {\biggerfont{#4}};
+		\draw[line width=1pt, rounded corners, fill=#5] (ULborder.south)++(0,-0.035\cardheight) coordinate (c)++(-90:0.0433\cardwidth)--++(0:0.075\cardwidth)--++(120:0.15\cardwidth)--++(-120:0.15\cardwidth)--cycle;
+		\node[anchor=center] at (c) {\subbigfont{#4}};
 		
-		\draw[line width=1pt, rounded corners, fill=#4] (URborder.south)++(0,-0.035\cardheight) coordinate (c)++(-90:0.0433\cardwidth)--++(0:0.075\cardwidth)--++(120:0.15\cardwidth)--++(-120:0.15\cardwidth)--cycle;
-		\node[anchor=center] at (c) {\subbigfont{#3}};
-	}{numcolor}{#1}%
+		\draw[line width=1pt, rounded corners, fill=#5] (URborder.south)++(0,-0.035\cardheight) coordinate (c)++(-90:0.0433\cardwidth)--++(0:0.075\cardwidth)--++(120:0.15\cardwidth)--++(-120:0.15\cardwidth)--cycle;
+		\node[anchor=center] at (c) {\subbigfont{#4}};
+	}{numcolor}{#2}%
 }
 \newcommand\CardFrontSign[5][\empty]{% [Eckzeichen], Überschrift, Zeichen, Farbe, Text
 	\CardFrontTikzBox{#2}{%
@@ -392,16 +392,16 @@
 		\Item Leg diese Karte und den Commit auf den Abwurfstapel.}%
 }
 \newcommand\CardMergeConflict[1]{% Zahlwert
-	\CardFrontCommitPlus[%
+	\CardFrontCommitPlus[conflict]{%
 		\centerline{\rede{git push -- merge conflict!}}\vskip1ex
 		Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-		\Item Übernimm den vorherigen Commit als deinen eigenen. Schieb ihn unter diese Karte, diese beiden Commits gelten ab jetzt als einer.]{#1}{!}{bg-yellow}%
+		\Item Übernimm den vorherigen Commit als deinen eigenen. Schieb ihn unter diese Karte, diese beiden Commits gelten ab jetzt als einer.}{#1}{!}{bg-yellow}%
 }
 \newcommand\CardMergeRequest[1]{% Zahlwert
-	\CardFrontCommitPlus[%
+	\CardFrontCommitPlus[request]{%
 		\centerline{\rede{git push -- merge request!}}\vskip1ex
 		Mit diesem Commit \textit{bittest} du deinen Kollegen um ein Code Review, dass er natürlich auch durchführt:\vskip0.5ex
-		\Item Der nächsten Spieler muss ein Revert ausspielen oder einmal aussetzen.]{#1}{?}{paleblue}%
+		\Item Der nächsten Spieler muss ein Revert ausspielen oder einmal aussetzen.}{#1}{?}{paleblue}%
 }
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
 	\CalcNumberColor{#2}%
@@ -633,10 +633,9 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \Schnittmarken
 \CardFrontCommit{10}%
 \CardFrontCommit{12}%
-\CardFrontCommitPlus[%
+\CardFrontCommitPlus[refactoring]{%
 \centerline{\rede{git push -- refactoring!}}\vskip1ex
-	%todo%Mit diesem Commit verursachst und löst du einen Merge Conflict:\vskip0.5ex
-	\Item Übernimm die vorherigen drei Commits als deine eigenen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.]{0}{!}{errorcolor}%
+	\Item Mit diesem Commit übernimmst du die vorherigen drei Commits als deine eigenen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.}{0}{!}{errorcolor}%
 \CardMergeConflict{2}%
 \CardMergeConflict{3}%
 \CardMergeConflict{4}%
