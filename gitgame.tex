@@ -6,9 +6,12 @@
 
 \usepackage[pass]{geometry}
 
-\usepackage[british, main=ngerman]{babel}
+\usepackage[provide=*, british, main=ngerman]{babel}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
+
+\hyphenation{dei-n-en Ent-wick-lern Issues müs-sen ver-deckt}
+
 \usepackage{tikz}
 \usetikzlibrary{shadows}
 
@@ -363,9 +366,9 @@
 			\tagnode{0.25*\cardwidth}{tagcenter}
 		\end{scope}
 	}{%
-	\centerline{\rede{git tag .\,.\,. und Lieferung!}}\vskip0.5ex
+	\centerline{\rede{git tag .\,.\,. und Lieferung!}}\vskip1ex
 %	Ich beschließe, dass der aktuelle Stand ausgeliefert wird:
-	\Item Falls das Ziel erreicht ist, wertet alle Karten im Repo.\ aus und legt sie sowie die aktuellen Issues und alle Handkarten auf den Abwurfstapel.\\
+	\Item Werte alle Karten im Repository aus und leg sie sowie die aktuellen Issues und alle Handkarten auf den Abwurfstapel.\\
 	\Item Leg diese Karte auf den Abwurfstapel und ziehe einen neuen CR.}%
 }
 \newcommand\CardRevert{%
@@ -467,7 +470,7 @@ Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der
 Es gibt drei Arten von \bgcolorbox{bgcolor1}{Handkarten}:
 \begin{itemize}
 	\item \textrule{Commit}-Karten werden ausgelegt und müssen dann mit einem Spielermarker markiert werden, damit man später weiß, wer welche Punkte bekommt. Ihr Zahlwert entspricht der Anzahl Codezeilen. Die Reihe der ausgelegten Commit-Karten entsprechen dem Remote Repository von Git.
-	\item \textrule{Release}-Karten beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.~\ref{auswerten}). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist, d.\,h.\ wenn die Summe der ausgelegten Zahlwerte dem Wert der Issue-Karte entspricht oder diesen übertrifft.
+	\item \textrule{Release}-Karten beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.~\ref{auswerten}). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist, d.\,h.\ wenn die Summe der ausgelegten Zahlwerte dem Wert der Issue-Karte (incl.\ Bugs) entspricht oder diesen übertrifft.
 	\item Sonstige Karten werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
 \end{itemize}
 
