@@ -243,36 +243,40 @@
 	\fi%
 %
 	\auxnum=#1
-	\ifnum\auxnum<0\else%
-		\ifnum\auxnum<16
-			\def\sixteen{white}%
-		\else%
-			\def\sixteen{black}%
-			\advance\auxnum by -16
-		\fi%
-		\ifnum\auxnum<8
-			\def\eight{white}%
-		\else%
-			\def\eight{black}%
-			\advance\auxnum by -8
-		\fi%
-		\ifnum\auxnum<4
-			\def\four{white}%
-		\else%
-			\def\four{black}%
-			\advance\auxnum by -4
-		\fi%
-		\ifnum\auxnum<2
-			\def\two{white}%
-		\else%
-			\def\two{black}%
-			\advance\auxnum by -2
-		\fi%
-		\ifnum\auxnum<1%
-			\def\one{white}%
-		\else%
-			\def\one{black}%
-		\fi%
+	\ifnum\auxnum<0%
+		\multiply\auxnum by -1%
+	\fi
+	\loop\ifnum\auxnum>31%
+		\advance\auxnum by -32%
+	\repeat
+	\ifnum\auxnum<16
+		\def\sixteen{white}%
+	\else%
+		\def\sixteen{black}%
+		\advance\auxnum by -16
+	\fi%
+	\ifnum\auxnum<8
+		\def\eight{white}%
+	\else%
+		\def\eight{black}%
+		\advance\auxnum by -8
+	\fi%
+	\ifnum\auxnum<4
+		\def\four{white}%
+	\else%
+		\def\four{black}%
+		\advance\auxnum by -4
+	\fi%
+	\ifnum\auxnum<2
+		\def\two{white}%
+	\else%
+		\def\two{black}%
+		\advance\auxnum by -2
+	\fi%
+	\ifnum\auxnum<1%
+		\def\one{white}%
+	\else%
+		\def\one{black}%
 	\fi%
 	\auxnum=#1
 }
@@ -419,8 +423,8 @@
 		\divide\auxnum by 2 %
 		\Item Bei der Lieferung erhält der Auslieferer \number\auxnum~Zusatzpunkte.}%
 }
-\newcommand\CardBug[2][0.25\cardwidth]{% halbe Breite, Zahlwert
-	\auxnum=#2
+\newcommand\CardBug[2][0.25\cardwidth]{% halbe Breite, Zahlwert (ohne Pluszeichen)
+	\CalcNumberColor{#2}%
 	\CardFrontTikzBox[#1]{Issue: Bug}{%
 %		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
 		\DrawNumber[\hugemathfont{+}\!]
