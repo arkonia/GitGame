@@ -2,6 +2,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{gitgame}[2024/10/04 macros for Git the card game by arkonia]
 
+\def\gitgameversion{1.0}
+
 \PassOptionsToClass{DIV=15, fontsize=11pt, oneside}{scrartcl}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \ProcessOptions\relax
@@ -87,9 +89,12 @@
 \newdimen\auxdim
 \newif\ifschnittmarken
 \schnittmarkenfalse
+\newif\ifshowouterborder
+\showouterbordertrue
 \newcommand\Schnittmarken{%
 	\clearpage
 	\schnittmarkentrue
+	\showouterborderfalse
 	\auxdim=\cardwidth
 	\advance\auxdim by \cardlinewidth
 	\hbox to 0pt{\vbox to 0pt{\vskip-0.5\cardborderradius% oben
@@ -125,8 +130,7 @@
 	\global\advance\cardnum by 1%
 	\begin{tikzpicture}
 		\coordinate (URex) at (\cardwidth,\cardheight);
-		\ifschnittmarken\else%
-			% Rahmen
+		\ifshowouterborder% Rahmen
 			\draw[line width=\cardlinewidth, rounded corners=\cardborderradius, fill=white] (0,0) rectangle (URex);
 		\fi
 }{%
@@ -149,7 +153,12 @@
 		\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
 		\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
 		\fill[#1, rounded corners=\cardborderradius] (\cardborder,\cardborder) coordinate (LL) rectangle (UR);
-	    \node at (Center) {\hugefont{git}};
+%	    \path (Center)+(0,0.15\cardheight) node {\includegraphics[width=0.5\cardwidth]{Git-Icon-Black}};
+%	    \path (Center)+(0,-0.15\cardheight) node {\hugefont{git}};
+%	    \path (Center)+(0,-0.35\cardheight) node {\textfontsize{v.\,\gitgameversion}};
+		%
+	    \path (Center) node {\includegraphics[width=0.5\cardwidth]{Git-Icon-Black}};
+		\path (Center)+(0,-0.35\cardheight) node {\textfontsize{v.\,\gitgameversion}};
 	\end{CardBase}%
 }
 \newenvironment{CardFront}[1]{%
@@ -213,7 +222,13 @@
 \newcommand\CardFrontTikzCircle[4]{% Überschrift, Tikz-Graphik, Farbe, Text
 	\CardFrontTikzBase{#1}{%
 		% Linie
-		\draw[line width=2pt] (UCenter)+(-0.45\cardwidth,0)--+(0.45\cardwidth,0);
+		\ifshowouterborder%
+			\draw[line width=2pt] (UCenter)+(-0.45\cardwidth,0)--+(0.45\cardwidth,0);
+		\else%
+			\begin{pgfinterruptboundingbox}
+				\draw[line width=2pt] (UCenter)+(-0.5\paperwidth,0)--+(0.5\paperwidth,0);		
+			\end{pgfinterruptboundingbox}
+		\fi%
 		% Kreis
 		\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];
 		#2}{#4}%
@@ -428,7 +443,7 @@
 }
 \newcommand\CardBug[2][0.25\cardwidth]{% halbe Breite, Zahlwert (ohne Pluszeichen)
 	\CalcNumberColor{#2}%
-	\CardFrontTikzBox[#1]{Issue: Bug}{%
+	\CardFrontTikzBox[#1]{Bug}{%
 %		\node at (UCenter) {\hugemathfont{+}\!\hugefont{#2}};
 		\DrawNumber[\hugemathfont{+}\!]
 		\DrawNumberAtBorder[errorcolor]
