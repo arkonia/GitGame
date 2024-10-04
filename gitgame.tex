@@ -10,7 +10,7 @@
 
 
 
-\title{Git -- das Kartenspiel}
+\title{Git -- das Kartenspiel\footnote{Dies ist Version~1.0. Die aktuelle Version ist zu finden unter: \url{https://github.com/arkonia/GitGame}}}
 \author{Philipp Müller}
 
 \begin{document}
@@ -38,7 +38,7 @@ Es gibt drei Arten von \bgcolorbox{bgcolor1}{Handkarten}:
 	\item Sonstige Karten werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
 \end{itemize}
 
-Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand an der Reihe ist und keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel.
+Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand an die Reihe kommt und keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel. Er spiel in dieser Runde also keine Karte aus.
 
 Am Ende des Zuges \textrule{stockt} man seine Handkarten wieder auf~(s.\,u.~\ref{aufstocken}) und dann ist der nächste Spieler an der Reihe.
 
@@ -52,11 +52,11 @@ Falls man am Ende seines Zuges weniger als drei Handkarten hat, zieht man neue K
 \subsection{Auswerten\label{auswerten}}
 Sobald jemand eine Release-Karte ausspielt, wird eine neue Version der Software geliefert. D.\,h.\ die aktuelle Runde wird ausgewertet. Jeder Spieler erhält Punkte entsprechend der Codezeilen all seiner Commits im Remote Repository, also zwischen Issue und Lieferung. Der Spieler der Release-Karte erhält zusätzliche Punkte wie auf der Issue-Karte angegeben.
 
-Nach der Auswertung werden alle ausgelegten und alle Handkarten abgeworfen. Jetzt können die Karten neu gemischt werden. Danach wird eine neue Issue-Karte ausgelegt und jeder Spieler erhält wieder drei Handkarten. Der Spieler nach dem Spieler, der die Release-Karte ausgespielt hat, beginnt die neue Runde.
+Nach der Auswertung werden alle ausgelegten Karten und alle Handkarten abgeworfen. Jetzt können die Karten neu gemischt werden. Danach wird eine neue Issue-Karte ausgelegt und jeder Spieler erhält wieder drei Handkarten. Der Spieler nach dem Spieler, der die Release-Karte ausgespielt hat, beginnt die neue Runde.
 
 
 \subsubsection*{Beispiel für eine Auswertung}
-Das Remote Repository (die ausgelegten Karten) sieht folgendermaßen aus:
+Am Ende einer Spielrunde kann das Remote Repository (also die ausgelegten Karten) folgendermaßen aussehen:
 
 \begin{center}
 \scalebox{0.5}{
@@ -93,18 +93,20 @@ Die Punkte sollten in einer kleinen Tabelle aufgeschrieben werden:
 \begin{tabular}{c|c|c|c}
 	Runde & A & B & C \\
 	\hline
-	v\,1 & 11 & 0 & 10 \\
+	v.\,1 & 11 & 0 & 10 \\
 	\hline
-	v\,2 &  & & \\
+	v.\,2 &  & & \\
 	\hline
-	v\,3 &  & & \\
+	v.\,3 &  & & \\
 \end{tabular}
 \end{center}
 
 
 
-\section{Spielende\label{ende}}
-Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spiel mindestens 100~Punkte erreicht hat. Gewonnen hat dann selbstverständlich der Spieler mit der höchsten Punktezahl.
+\section{Ende\label{ende}}
+Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spieler mindestens 100~Punkte erreicht hat.
+
+Gewonnen hat in jedem Fall selbstverständlich der Spieler mit der höchsten Punktezahl.
 
 
 
