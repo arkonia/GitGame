@@ -161,7 +161,7 @@
     \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
 	
 	% Überschrift
-	\path (UCenter)+(0,0.25\cardheight) node {\bigfont{#1}};
+	\path (UCenter)+(0,0.2375\cardheight) node {\bigfont{#1}};
 }{
   \end{CardBase}%
 }
@@ -322,7 +322,7 @@
 	\CalcNumberColor{#2}%
 	\CardFrontTikzCircle{commit}{\DrawNumber\DrawNumberBorder}{numcolor}{#1}%
 }
-\newcommand\CardFrontCommitPlus[5][commit]{% Titel, Text, Zahlwert, Symbol, Farbe
+\newcommand\CardFrontCommitPlus[5][commit]{% Überschrift, Text, Zahlwert, Symbol, Farbe
 	\CalcNumberColor{#3}%
 	\CardFrontTikzCircle{#1}{\DrawNumber\DrawNumberBorder %
 %		\draw[line width=1.25pt, rounded corners, fill=#5] (UCenter)++(30:0.275\cardwidth) coordinate (c)++(-90:0.0866\cardwidth)--++(0:0.15\cardwidth)--++(120:0.3\cardwidth)--++(-120:0.3\cardwidth)--cycle;
