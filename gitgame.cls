@@ -51,13 +51,13 @@
 \newcommand\Item{$\bullet$\kern0.333em}
 
 \newdimen\cardwidth
-\cardwidth=60mm
+\cardwidth=59mm
 \newdimen\cardheight
-\cardheight=90mm
+\cardheight=92mm
 \newdimen\cardborder
-\cardborder=5mm
+\cardborder=4mm
 \newdimen\cardborderradius
-\cardborderradius=7mm
+\cardborderradius=5mm
 \newdimen\cardtextwidth
 \cardtextwidth=\cardwidth
 \advance\cardtextwidth by -2.75\cardborder
@@ -84,6 +84,7 @@
 %	\PlayerMarker{#1, circular drop shadow={shadow xshift=3pt, shadow yshift=3pt, shadow scale=1.2}}{#2}%
 	\PlayerMarker{#1}{#2}%
 }
+\newdimen\auxdim
 \newif\ifschnittmarken
 \schnittmarkenfalse
 \newcommand\Schnittmarken{%
@@ -154,7 +155,7 @@
 \newenvironment{CardFront}[1]{%
   \begin{CardBase}
     \path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center);
-    \path (URex)--+(-\cardborder,-\cardborder) coordinate[midway] (URmed) coordinate (UR);
+    \path (URex)--+(-\cardborder,-\cardborder) coordinate[pos=0.75] (URmed) coordinate (UR);
     \coordinate (ULex) at (0,\cardheight);
     \coordinate (LRex) at (\cardwidth,0);
     
@@ -163,10 +164,10 @@
     
     \path (LL)-|(UR) coordinate[midway] (LR);
     \path (LL)|-(UR) coordinate[midway] (UL);
-    \path (UL)--(ULex) coordinate[midway] (ULmed);
+    \path (UL)--(ULex) coordinate[pos=0.25] (ULmed);
     \path (LL)-|(UR) coordinate[midway] (LR);
-    \path (LL)--(0,0) coordinate[midway] (LLmed);
-    \path (LR)--(LRex) coordinate[midway] (LRmed);
+    \path (LL)--(0,0) coordinate[pos=0.25] (LLmed);
+    \path (LR)--(LRex) coordinate[pos=0.25] (LRmed);
 
     \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
 	
@@ -368,11 +369,11 @@
 		\tagnode[line width=1.5pt]{\cardwidth}{tagcenter}
 		\node at (tagcenter) {\bigfont{v\,1.x}};
 		% Ecken
-		\path (UL)+(0,-0.05\cardwidth) coordinate (tagcenter);
+		\path (UL)+(1mm,-4mm) coordinate (tagcenter);
 		\begin{scope}[rotate=90]
 			\tagnode{0.25*\cardwidth}{tagcenter}
 		\end{scope}
-		\path (UR)+(0,-0.05\cardwidth) coordinate (tagcenter);
+		\path (UR)+(-1mm,-4mm) coordinate (tagcenter);
 		\begin{scope}[rotate=90]
 			\tagnode{0.25*\cardwidth}{tagcenter}
 		\end{scope}
