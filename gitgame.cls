@@ -207,7 +207,7 @@
 \colorlet{cherrycolor}{red!80!blue}
 \colorlet{oddcolor}{magenta!65}
 
-\newcommand\bgcolorbox[2]{\colorbox{#1}{#2\strut}}
+\newcommand\bgcolorbox[2]{{\fboxsep=0pt\colorbox{#1}{#2\strut}}}
 \newcommand\CardTextField[1]{% Text
     \path (UCenter)+(0,-0.25\cardwidth-0.015\cardheight) node[anchor=north] {%
 	\begin{minipage}{\cardtextwidth}
