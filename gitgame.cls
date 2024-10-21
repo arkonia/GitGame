@@ -442,6 +442,11 @@
 		Mit diesem Commit \textit{bittest} du deinen Kollegen um ein Code Review, dass er natürlich auch durchführt:\vskip0.5ex
 		\Item Der nächsten Spieler muss ein Revert ausspielen oder einmal aussetzen.}{#1}{?}{paleblue}%
 }
+\newcommand\CardRefactoring[1][0]{% Zahlwert
+	\CardFrontCommitPlus[refactoring]{%
+	\centerline{\rede{git push -- refactoring!}}\vskip1ex
+	\Item Mit diesem Commit übernimmst du die vorherigen drei Commits als deine eigenen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.}{#1}{!}{errorcolor}%
+}
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
 	\CalcNumberColor{#2}%
 	\CardFrontTikzBox{Issue: #1}{\DrawNumber\DrawNumberAtBorder}{numcolor}{%
