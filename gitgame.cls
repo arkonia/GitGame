@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2024/10/04 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2024/10/20 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.0}
 
@@ -60,6 +60,8 @@
 \cardborder=4mm
 \newdimen\cardborderradius
 \cardborderradius=5mm
+\newdimen\cardwidthplus
+\cardwidthplus=65mm
 \newdimen\cardtextwidth
 \cardtextwidth=\cardwidth
 \advance\cardtextwidth by -2.75\cardborder
@@ -223,11 +225,15 @@
 	\CardFrontTikzBase{#1}{%
 		% Linie
 		\ifshowouterborder%
-			\draw[line width=2pt] (UCenter)+(-0.45\cardwidth,0)--+(0.45\cardwidth,0);
+			\draw[line width=2pt] (UCenter)+(-0.5\cardwidth,0)--+(0.5\cardwidth,0);
 		\else%
-			\begin{pgfinterruptboundingbox}
-				\draw[line width=2pt] (UCenter)+(-0.5\paperwidth,0)--+(0.5\paperwidth,0);		
-			\end{pgfinterruptboundingbox}
+			\ifschnittmarken%
+				\draw[line width=2pt] (UCenter)+(-0.5\cardwidth,0)--+(0.5\cardwidth,0);
+			\else%
+				\begin{pgfinterruptboundingbox}
+					\draw[line width=2pt] 	(UCenter)+(-0.5\cardwidthplus,0)--+(0.5\cardwidthplus,0);		
+				\end{pgfinterruptboundingbox}
+			\fi%
 		\fi%
 		% Kreis
 		\draw[line width=1.5pt, fill=#3] (UCenter) circle[radius=0.25*\cardwidth];

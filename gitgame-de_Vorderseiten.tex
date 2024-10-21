@@ -1,0 +1,157 @@
+% !TeX spellcheck = de_DE
+\documentclass[DIV=15, fontsize=11pt]{gitgame}
+\renewcommand*{\sectionformat}{\thesection~--~}
+\renewcommand*{\subsectionformat}{\thesubsection~--~}
+
+\usepackage[top=3mm,bottom=3mm,textwidth=\cardwidth,textheight=\cardheight,paperwidth=65mm,paperheight=98mm]{geometry}
+
+\usepackage[provide=*, british, main=ngerman]{babel}
+\usepackage[hidelinks]{hyperref}
+
+
+
+\begin{document}
+\cardnum=0
+\showouterborderfalse
+%
+\CardFrontCommitPlus[refactoring]{%
+	\centerline{\rede{git push -- refactoring!}}\vskip1ex
+	\Item Mit diesem Commit übernimmst du die vorherigen drei Commits als deine eigenen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.}{0}{!}{errorcolor}%
+
+\CardFrontCommit{1}%
+
+\CardMergeConflict{1}%
+
+\CardFrontCommit{2}%
+
+\CardMergeConflict{2}%
+
+\CardMergeRequest{2}%
+
+\CardFrontCommit{3}%
+
+\CardFrontCommit{3}%
+
+\CardMergeConflict{3}%
+
+\CardMergeRequest{3}%
+
+\CardFrontCommit{4}%
+
+\CardFrontCommit{4}%
+
+\CardMergeConflict{4}%
+
+\CardMergeRequest{4}%
+
+\CardFrontCommit{5}%
+
+\CardFrontCommit{5}%
+
+\CardMergeRequest{5}%
+
+\CardFrontCommit{6}%
+
+\CardFrontCommit{6}%
+
+\CardFrontCommit{7}%
+
+\CardFrontCommit{7}%
+
+\CardFrontCommit{8}%
+
+\CardFrontCommit{8}%
+
+\CardFrontCommit{9}%
+
+\CardFrontCommit{10}%
+
+\CardFrontCommit{12}%
+
+
+\CardRelease%
+
+\CardRelease%
+
+\CardRelease%
+
+\CardRelease%
+
+\CardRelease%
+
+
+\CardRevert%
+
+\CardRevert%
+
+\CardRevert%
+
+\CardRevert%
+
+\CardRevert%
+
+
+\CardFrontSign[??]{help}{???}{bg-green}{%
+	\centerline{\rede{git help!}}\vskip1ex
+	Du weißt gerade nicht weiter und brauchst Hilfe:\vskip0.5ex
+	\Item Leg diese Karte auf den Abwurfstapel.\\
+	\Item Zieh drei Handkarten zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
+
+\CardFrontSign{status}{?}{bg-yellow}{%
+	\centerline{\rede{git status!}}\vskip1ex
+	Du hast gerade keine Idee und brauchst erstmal einen Überblick:\vskip0.5ex
+	\Item Leg diese Karte auf den Abwurfstapel.\\
+	\Item Zieh eine Handkarte zusätzlich, nachdem du \textrule{aufgestockt} hast.}%
+
+\CardFrontTikzBox{stash}{%
+	% Mitte
+	\begin{scope}[line width=2pt]
+		\draw[fill=gray] (UCenter)+(-0.15\cardwidth,0) rectangle +(0.15\cardwidth,-0.075\cardheight);
+		\draw[-latex, line width=3pt] (UCenter)+(0,0.1\cardheight)--(UCenter);
+	\end{scope}
+	% Ecken
+	\DrawSignAtBorders{oddcolor}{%
+		\draw[fill=gray, line width=1pt] (0,0)+(-0.05\cardwidth,0) rectangle +(0.05\cardwidth,-0.025\cardheight);
+		\fill (0,0)--++(0.02\cardwidth,0.03\cardheight)--++(-0.04\cardwidth,0);
+	}
+	}{oddcolor}{%
+	\centerline{\rede{git stash!}}\vskip1ex
+	\Item Leg bis zu zwei Handkarten verdeckt vor Dir ab.
+	\parendcentered
+	\Item Sie können weiterhin wie Handkarten ausgespielt werden, zählen aber nicht beim \textrule{Aufstocken} mit und gehen bei einem Release nicht verloren.}%
+
+\CardCherryPick%
+
+\CardCherryPick%
+
+
+\CardBug{5}%
+
+\CardBug{7}%
+
+\CardBug{8}%
+
+\CardBug[0.275\cardwidth]{10}%
+
+
+
+\CardIssue{10}%
+
+\CardIssue{12}%
+
+\CardIssue{15}%
+
+\CardIssue{16}%
+
+\CardIssue{20}%
+
+\CardIssue{24}%
+
+\CardIssue{26}%
+
+\CardIssue{30}%
+
+\CardIssue{32}%
+
+
+\end{document}
