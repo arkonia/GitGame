@@ -153,7 +153,7 @@
 	\vskip-1pt
 	\fi%
 }
-\newcommand\CardBack[1][bgcolor1]{%
+\newcommand\CardBack[1][bgcolor2]{%
 	\begin{CardBase}
 		\path (0,0)--(\cardwidth,\cardheight) coordinate[midway] (Center) coordinate (URex);
 		\path (URex)--+(-\cardborder,-\cardborder) coordinate (UR);
