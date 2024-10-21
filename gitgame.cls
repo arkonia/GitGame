@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2024/10/20 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2024/10/21 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.0}
 
@@ -22,6 +22,9 @@
 
 \RequirePackage{tikz}
 %\usetikzlibrary{shadows}
+\newcommand\dimenToMM[1]{%
+	\textup{\pgfmathparse{int(round((#1)/1mm))}\pgfmathresult\,mm}%
+}
 
 \RequirePackage{enumitem}
 \setlist{nolistsep}
