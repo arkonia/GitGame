@@ -17,15 +17,15 @@ jobs:
         with:
           packages: >
             latex latex-bin scheme-small koma-script luatexbase luatex babel babel-german pgf enumitem
-      - run: lualatex gitgame
+      - run: lualatex gitgame-de
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: gitgame.pdf
+          path: gitgame-de.pdf
       - name: Prepare build directory
         run: |
           mkdir build
-          cp gitgame.pdf build/
+          cp gitgame-de.pdf build/
       - name: Upload to GitHub-pages
         uses: crazy-max/ghaction-github-pages@v4
         with:
