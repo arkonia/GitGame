@@ -180,15 +180,15 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 \Schnittmarken%
 \cardnum=0
 %
+\CardRefactoring%
 \CardFrontCommit{1}%
+\CardMergeConflict{1}%
 \CardFrontCommit{2}%
+\CardMergeConflict{2}%
+\CardMergeRequest{2}%
 \CardFrontCommit{3}%
-\CardFrontCommit{4}%
-\CardFrontCommit{5}%
-\CardFrontCommit{6}%
-\CardFrontCommit{7}%
-\CardFrontCommit{8}%
-\CardFrontCommit{9}%
+\CardFrontCommit{3}%
+\CardMergeConflict{3}%
 
 %\newgeometry{top=10mm,bottom=10mm,textwidth=3\cardwidth}
 %
@@ -206,15 +206,39 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 \Schnittmarken
+\CardMergeRequest{3}%
+\CardFrontCommit{4}%
+\CardFrontCommit{4}%
+\CardMergeConflict{4}%
+\CardMergeRequest{4}%
+\CardFrontCommit{5}%
+\CardFrontCommit{5}%
+\CardMergeRequest{5}%
+\CardFrontCommit{6}%
+
+\Schnittmarken
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+
+
+
+\Schnittmarken
+\CardFrontCommit{6}%
+\CardFrontCommit{7}%
+\CardFrontCommit{7}%
+\CardFrontCommit{8}%
+\CardFrontCommit{8}%
+\CardFrontCommit{9}%
 \CardFrontCommit{10}%
 \CardFrontCommit{12}%
-\CardRefactoring%
-\CardMergeConflict{2}%
-\CardMergeConflict{3}%
-\CardMergeConflict{4}%
-\CardMergeRequest{2}%
-\CardMergeRequest{3}%
-\CardMergeRequest{4}%
+\CardRelease%
 
 \Schnittmarken
 \CardBack%
@@ -230,9 +254,30 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 
 \Schnittmarken
+\CardRelease%
+\CardRelease%
+\CardRelease%
+\CardRelease%
 \CardRevert%
 \CardRevert%
 \CardRevert%
+\CardRevert%
+\CardRevert%
+
+\Schnittmarken
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+\CardBack%
+
+
+
+\Schnittmarken
 \CardFrontSign[??]{help}{???}{bg-green}{%
 	\centerline{\rede{git help!}}\vskip1ex
 	Du weißt gerade nicht weiter und brauchst Hilfe:\vskip0.5ex
@@ -254,64 +299,17 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 		\draw[fill=gray, line width=1pt] (0,0)+(-0.05\cardwidth,0) rectangle +(0.05\cardwidth,-0.025\cardheight);
 		\fill (0,0)--++(0.02\cardwidth,0.03\cardheight)--++(-0.04\cardwidth,0);
 	}
-	}{oddcolor}{%
+}{oddcolor}{%
 	\centerline{\rede{git stash!}}\vskip1ex
 	\Item Leg bis zu zwei Handkarten verdeckt vor Dir ab.
 	\parendcentered
 	\Item Sie können weiterhin wie Handkarten ausgespielt werden, zählen aber nicht beim \textrule{Aufstocken} mit und gehen bei einem Release nicht verloren.}%
 \CardCherryPick%
-%\CardFrontTikzBox{}{}{white}{todo}%
-%\CardFrontTikzBox{}{}{white}{todo}%
-\CardMergeRequest{5}
-\CardRevert
-
-\Schnittmarken
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-
-
-
-\Schnittmarken
-\CardRelease%
-\CardRelease%
-\CardRelease%
-\CardRelease%
-\CardRelease%
+\CardCherryPick%
 \CardBug{5}%
 \CardBug{7}%
 \CardBug{8}%
 \CardBug[0.275\cardwidth]{10}%
-
-\Schnittmarken
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-\CardBack%
-
-
-
-\Schnittmarken
-\CardIssue{10}%
-\CardIssue{12}%
-\CardIssue{15}%
-\CardIssue{16}%
-\CardIssue{20}%
-\CardIssue{24}%
-\CardIssue{26}%
-\CardIssue{30}%
-\CardIssue{32}%
 
 \Schnittmarken
 \CardBack%[bgcolor2]%
@@ -328,15 +326,15 @@ Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren 
 
 % Zusatzkarten
 \Schnittmarken
-\CardFrontCommit{3}%
-\CardFrontCommit{4}%
-\CardFrontCommit{5}%
-\CardFrontCommit{6}%
-\CardFrontCommit{7}%
-\CardFrontCommit{8}%
-\CardMergeConflict{1}%
-\CardRevert%
-\CardCherryPick%
+\CardIssue{10}%
+\CardIssue{12}%
+\CardIssue{15}%
+\CardIssue{16}%
+\CardIssue{20}%
+\CardIssue{24}%
+\CardIssue{26}%
+\CardIssue{30}%
+\CardIssue{32}%
 
 \Schnittmarken
 \CardBack%
