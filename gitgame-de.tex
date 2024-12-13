@@ -22,25 +22,26 @@ Dieses Spiel parodiert die agile Software-Entwicklung. Die Spieler bilden dabei 
 
 
 \section{Aufbau}
-Das Spiel besteht auch vier Arten von Karten.
+Das Spiel besteht aus vier Arten von Karten: Issue-, Commit-, Release- und sonstigen Karten.
 
+% TODO: Kleine Dummy-Bilder der 4 Arten
 %[4 Arten]
 %\CardIssue{10}
 %\CardFrontCommit{3}
 %\CardRelease
 
-Die 9~\bgcolorbox{middlecolor!50}{\textrule{Issue}-Karten} werden am Anfang von den anderen Karten getrennt, gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie bildet das Ziel der ersten Spielrunde.
+Die 9~\bgcolorbox{middlecolor!50}{\textrule{Issue}-Karten} werden am Anfang von den anderen Karten getrennt, gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie gibt das Ziel der ersten Spielrunde an und beginnt die Reihe der ausgelegten Karten, also das \textrule{Remote Repository} von Git.
 
 Alle anderen Karten werden auch gut gemischt und bildet den Zugstapel. Jeder Spieler erhält drei davon auf die Hand, die sog.\ Handkarten. Diese entsprechen dem lokalen Git-Arbeitsverzeichnis des Spielers.
 
 
 
 \section{Ablauf}
-Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Sie beginnen mit dem Aufdecken einer \bgcolorbox{middlecolor!50}{\textrule{Issue}-Karte}, die das Punkteziel der Runde angibt, und Enden mit einer Lieferung durch das Anlegen einer \bgcolorbox{highcolor!50}{\textrule{Release}-Karte}. Dazwischen spielen alle Spieler reihum immer genau eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht.
+Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Sie beginnen mit dem Aufdecken einer \bgcolorbox{middlecolor!50}{\textrule{Issue}-Karte}, die das Punkteziel der Runde angibt, und Enden mit der Auslieferung einer neuen Version der Software durch das Anlegen einer \bgcolorbox{highcolor!50}{\textrule{Release}-Karte}. Dazwischen spielen alle Spieler reihum immer genau eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht.
 
 Es gibt drei Arten von Handkarten:
 \begin{itemize}
-	\item \bgcolorbox{nullcolor!50}{\textrule{Commit}-Karten} werden ausgelegt und müssen dann mit einem Spielermarker markiert werden, damit man später weiß, wer welche Punkte bekommt. Ihr Zahlwert entspricht der Anzahl Codezeilen. Die Reihe der ausgelegten Commit-Karten entsprechen dem Remote Repository von Git.
+	\item \bgcolorbox{nullcolor!50}{\textrule{Commit}-Karten} zeigen einen Kreis mit einem Zahlwert, der einer Anzahl geänderter Codezeilen entspricht. Sie werden an das Remote Repository angelegt und müssen dann mit einem Spielermarker markiert werden, damit man später weiß, wer welche Punkte bekommt.
 	\item \bgcolorbox{highcolor!50}{\textrule{Release}-Karten} beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.~\ref{auswerten}). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist, d.\,h.\ wenn die Summe der ausgelegten Zahlwerte dem Wert der Issue-Karte (incl.\ Bugs) entspricht oder diesen übertrifft.
 	\item \bgcolorbox{warncolor!50}{Sonstige Karten} werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
 \end{itemize}
@@ -63,7 +64,7 @@ Nach der Auswertung werden alle ausgelegten Karten und alle Handkarten abgeworfe
 
 
 \subsubsection*{Beispiel für eine Auswertung}
-Am Ende einer Spielrunde kann das Remote Repository (also die ausgelegten Karten) folgendermaßen aussehen:
+Am Ende einer Spielrunde kann das Remote Repository folgendermaßen aussehen:
 
 \begin{center}
 \scalebox{0.45}{
@@ -84,10 +85,11 @@ Am Ende einer Spielrunde kann das Remote Repository (also die ausgelegten Karten
 \hskip1em
 \cardnum=0
 \CardRelease
+\hskip-0.6\cardwidth
+\clap{\raisebox{-0.1\cardwidth}{\PlayerMarkerWithShadow{errorcolor}{A}}}
 }
 \end{center}
 
-Spieler~A hat die Release-Karte ausgespielt.
 \begin{itemize}
 	\item Spieler~A erhält 11~Punkte: Zahlkarte~5 plus 6~Extrapunkte fürs Release.
 	\item Spieler~B erhält 0~Punkte: Seine Zahlkarte~7 wurde von Spieler~C geklaut!
@@ -113,7 +115,7 @@ Die Punkte sollten in einer kleinen Tabelle aufgeschrieben werden:
 \section{Ende\label{ende}}
 Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spieler mindestens 100~Punkte erreicht hat.
 
-Gewonnen hat in jedem Fall selbstverständlich der Spieler mit der höchsten Punktezahl.
+Gewonnen hat in jedem Fall selbstverständlich der Spieler mit der höchsten Gesamtpunktezahl.
 
 
 
