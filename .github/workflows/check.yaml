@@ -17,8 +17,11 @@ jobs:
         with:
           packages: >
             latex latex-bin scheme-small koma-script luatexbase luatex babel babel-german pgf enumitem
-      - name: First run
-        run: lualatex gitgame-de
+      - name: First runs
+        run: |
+          lualatex gitgame-de
+          lualatex gitgame-de_Vorderseiten.tex
+          lualatex gitgame-de_Rueckseite.tex
       - name: Second run
         run: lualatex gitgame-de
       - name: Upload Build Artifacts
@@ -29,6 +32,8 @@ jobs:
         run: |
           mkdir build
           cp gitgame-de.pdf build/
+          cp gitgame-de_Vorderseiten.pdf build/
+          cp gitgame-de_Rueckseite.pdf build/
       - name: Upload to GitHub-pages
         uses: crazy-max/ghaction-github-pages@v4
         with:
