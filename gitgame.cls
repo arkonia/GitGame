@@ -445,7 +445,7 @@
 \newcommand\CardRefactoring[1][0]{% Zahlwert
 	\CardFrontCommitPlus[refactoring]{%
 	\centerline{\rede{git push -- refactoring!}}\vskip1ex
-	\Item Mit diesem Commit übernimmst du die vorherigen drei Commits als deine eigenen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.}{#1}{!}{errorcolor}%
+	\Item Mit diesem Commit übernimmst du die vorherigen drei Commits als deine eigenen. Dazu müssen schon mindestens drei Commits ausliegen. Schieb sie unter diese Karte, alle diese Commits gelten ab jetzt als einer.}{#1}{!}{errorcolor}%
 }
 \newcommand\CardIssue[2][CR]{% Zusatz, Zahlwert
 	\CalcNumberColor{#2}%
