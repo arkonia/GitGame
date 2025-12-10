@@ -2,7 +2,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{gitgame}[2024/10/21 macros for Git the card game by arkonia]
 
-\def\gitgameversion{1.0}
+\def\gitgameversion{1.1}
 
 \PassOptionsToClass{DIV=15, fontsize=11pt, oneside}{scrartcl}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
@@ -382,9 +382,11 @@
 	}{#4}{#5}%
 }
 
-\newcommand\tagnode[3][line width=1pt]{% scale, position
+\newcommand\tagnode[3][line width=1pt]{% [tikz options], length, position
 	\draw[rounded corners=0.025*#2, fill=highcolor, #1] (#3)++(-0.2*#2,-0.175*#2)--++(0.4*#2,0)--++(0.175*#2,0.175*#2)--++(-0.175*#2,0.175*#2)--++(-0.4*#2,0)--cycle;
 	\draw[#1, fill=bgcolor] (#3)+(0.235*#2,0) circle[radius=0.05*#2];
+	\path (#3)++(-0.2*#2,0) coordinate (tagnode.left);
+	\path (#3)++(0.185*#2,0) coordinate (tagnode.hole.left);
 }
 \newcommand\CardRelease{%
 	\CardFrontTikzBase{release}{%
@@ -392,6 +394,9 @@
 		\path (UCenter)++(-0.075\cardwidth,0) coordinate (tagcenter);
 		\tagnode[line width=1.5pt]{\cardwidth}{tagcenter}
 		\node at (tagcenter) {\bigfont{v\,1.x}};
+		% Linie
+		\draw[line width=2pt] (UCenter)+(-0.5\cardwidth,0)--(tagnode.left);
+		\draw[line width=2pt] (UCenter)+(0.5\cardwidth,0)--(tagnode.hole.left);
 		% Ecken
 		\path (UL)+(1mm,-4mm) coordinate (tagcenter);
 		\begin{scope}[rotate=90]
