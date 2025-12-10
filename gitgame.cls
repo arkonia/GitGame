@@ -385,8 +385,8 @@
 \newcommand\tagnode[3][line width=1pt]{% [tikz options], length, position
 	\draw[rounded corners=0.025*#2, fill=highcolor, #1] (#3)++(-0.2*#2,-0.175*#2)--++(0.4*#2,0)--++(0.175*#2,0.175*#2)--++(-0.175*#2,0.175*#2)--++(-0.4*#2,0)--cycle;
 	\draw[#1, fill=bgcolor] (#3)+(0.235*#2,0) circle[radius=0.05*#2];
-	\path (#3)++(-0.2*#2,0) coordinate (tagnode.left);
-	\path (#3)++(0.185*#2,0) coordinate (tagnode.hole.left);
+	\path (#3)++(-0.2*#2,0) coordinate (tagnode_left);
+	\path (#3)++(0.185*#2,0) coordinate (tagnode_hole_left);
 }
 \newcommand\CardRelease{%
 	\CardFrontTikzBase{release}{%
@@ -395,8 +395,8 @@
 		\tagnode[line width=1.5pt]{\cardwidth}{tagcenter}
 		\node at (tagcenter) {\bigfont{v\,1.x}};
 		% Linie
-		\draw[line width=2pt] (UCenter)+(-0.5\cardwidth,0)--(tagnode.left);
-		\draw[line width=2pt] (UCenter)+(0.5\cardwidth,0)--(tagnode.hole.left);
+		\draw[line width=2pt] (UCenter)+(-0.5\cardwidth,0)--(tagnode_left);
+		\draw[line width=2pt] (UCenter)+(0.5\cardwidth,0)--(tagnode_hole_left);
 		% Ecken
 		\path (UL)+(1mm,-4mm) coordinate (tagcenter);
 		\begin{scope}[rotate=90]
