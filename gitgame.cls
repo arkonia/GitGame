@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2024/10/21 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2026/01/20 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.1}
 
@@ -98,6 +98,7 @@
 \showouterbordertrue
 \newcommand\Schnittmarken{%
 	\clearpage
+	\cardnum=0
 	\schnittmarkentrue
 	\showouterborderfalse
 	\auxdim=\cardwidth
@@ -445,7 +446,7 @@
 	\CardFrontCommitPlus[request]{%
 		\centerline{\rede{git push -- merge request!}}\vskip1ex
 		Mit diesem Commit \textit{bittest} du deinen Kollegen um ein Code Review, dass er natürlich auch durchführt:\vskip0.5ex
-		\Item Der nächsten Spieler muss ein Revert ausspielen oder einmal aussetzen.}{#1}{?}{paleblue}%
+		\Item Der nächste Spieler muss diese Karte mit einem Revert negieren oder einmal aussetzen.}{#1}{?}{paleblue}%
 }
 \newcommand\CardRefactoring[1][0]{% Zahlwert
 	\CardFrontCommitPlus[refactoring]{%
@@ -468,7 +469,7 @@
 		\DrawNumberAtBorder[errorcolor]
 		}{errorcolor}{%
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
-		\Item Leg die Karte zum aktuellen CR.\\
+		\Item Leg diese Karte zum aktuellen CR.\\
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich geschrieben werden.}%
 }
 \newcommand\CardCherryPick{%
