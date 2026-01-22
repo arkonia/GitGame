@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2026/01/20 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2026/01/21 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.1}
 
@@ -471,6 +471,29 @@
 		\rede{Ich habe einen Fehler gefunden, der auch noch behoben werden muss.}\vskip0.5ex
 		\Item Leg diese Karte zum aktuellen CR.\\
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich geschrieben werden.}%
+}
+\newcommand\hand[3][]{% [tikz options,] size, position
+	\draw[line width=1pt,#1] (#3)++(0.4*#2,0.2*#2)
+		arc (0:180:0.1*#2)--++(0,0.05*#2)
+		arc (0:180:0.1*#2)--++(0,0.05*#2)
+		arc (0:180:0.1*#2)--++(0,0.35*#2)
+		arc (0:180:0.1*#2)--++(0,-0.5*#2)
+		--++(-0.1*#2,0) arc (90:180:0.1*#2)--++(0,-0.1*#2) arc (180:270:0.2*#2)%--++(0.2*#2,-0.2*#2)
+		arc (180:360:0.4*#2)--cycle;
+}
+\newcommand\CardBlame[1][errorcolor]{% Farbe
+	\CardFrontTikzBase{blame}{%
+		% Mitte
+		\hand[line width=1.5pt,fill=#1]{0.4\cardwidth}{UCenter}
+		% Ecken
+		\path (UL)++(0.035\cardwidth,-0.05\cardwidth) coordinate (ULhand);
+		\path (UR)++(-0.035\cardwidth,-0.05\cardwidth) coordinate (URhand);
+		\hand[fill=#1]{0.125\cardwidth}{ULhand}
+		\hand[fill=#1]{0.125\cardwidth}{URhand}
+	}{%
+	\centerline{\rede{git blame!}}\vskip1ex
+	Du hast herausgefunden, wer für den Fehler verursacht hat.\\
+	\Item Leg einen Marker eines Spielers deiner Wahl auf einen ausliegenden Bug. Dieser Spieler erhält den Wert des Bugs als Minuspunkte bei der Lieferung.}%
 }
 \newcommand\CardCherryPick{%
 	\CardFrontTikzBase{cherry-pick}{%
