@@ -248,6 +248,30 @@
 		\draw[line width=1.5pt, rounded corners, fill=#4] (UCenter)++(-#1,-0.2\cardwidth) rectangle ++(2*#1,0.4\cardwidth);
 		#3}{#5}%
 }
+\newcommand\CardMarker[1]{% Zahl
+	\CardFrontTikzBase{}{%
+		\colorlet{markercolor}{\ifcase#1\or errorcolor\or warncolor\or nullcolor\or middlecolor\or highcolor\fi}%
+		\edef\markerletter{\ifcase#1\or A\or B\or C\or D\or E\fi}%
+
+	    % innerster Rahmen
+		\auxdim=\cardborderradius
+		\advance\auxdim by -2.5mm
+		\path (UR)+(-2.5mm,-2.5mm) coordinate (aux);
+		\fill[markercolor!30, draw=black!50, rounded corners=\auxdim] (\cardborder,\cardborder)+(2.5mm,2.5mm) rectangle (aux);
+		
+		% Überschrift
+		\path (UCenter)+(0,0.225\cardheight) node[anchor=base] {\bigfont{%
+			\ifcase#1\or rot\or orange\or gelb\or grün\or blau\fi%
+		}};
+		
+		\draw[line width=1.5pt, rounded corners, fill=markercolor] (UCenter)+(90:0.25\cardwidth)
+			--+(162:0.25\cardwidth)--+(234:0.25\cardwidth)
+			--+(306:0.25\cardwidth)--+(18:0.25\cardwidth)--cycle;
+		\node at (UCenter) {\hugefont{\markerletter}};
+		
+		\path (UCenter)+(0,-0.25\cardheight) node {\textfontsize{Marker für Spieler~\markerletter}};
+		}{}%
+}
 \newcommand\CalcNumberColor[1]{% Zahlwert
 	\ifnum#1<0
 		\colorlet{numcolor}{errorcolor}%
