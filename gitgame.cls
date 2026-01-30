@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2026/01/29 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2026/01/21 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.1}
 
@@ -187,15 +187,15 @@
     \path (Center)+(0,0.075\cardheight) coordinate (UCenter);
 	
 	% Überschrift
-	\path (UCenter)+(0,0.2375\cardheight) node {\bigfont{#1}};
+	\path (UCenter)+(0,0.225\cardheight) node[anchor=base] {\bigfont{#1}};
 }{
   \end{CardBase}%
 }
 
 \colorlet{bgcolor}{gray!20}
 \colorlet{bgcolor1}{green!20}
-\colorlet{bgcolor2}{orange!25} % niedrige CRs
-\colorlet{bgcolor3}{red!20}% hohe CRs
+\colorlet{bgcolor2}{orange!25}
+\colorlet{bgcolor3}{magenta!20}
 \colorlet{bg-green}{green!65}% = rgb 0.35,1,0.35
 \colorlet{bg-yellow}{yellow!75}
 \definecolor{bg-blue}{rgb}{0.333,0.667,1}
@@ -473,14 +473,13 @@
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich geschrieben werden.}%
 }
 \newcommand\hand[3][]{% [tikz options,] size, position
-	\draw[line width=1pt, #1] (#3)++(0.4*#2,0.15*#2)
+	\draw[line width=1pt,#1] (#3)++(0.4*#2,0.2*#2)
 		arc (0:180:0.1*#2)--++(0,0.05*#2)
 		arc (0:180:0.1*#2)--++(0,0.05*#2)
 		arc (0:180:0.1*#2)--++(0,0.35*#2)
 		arc (0:180:0.1*#2)--++(0,-0.5*#2)
-		--++(-0.1*#2,-0.1*#2)
-		arc(135:225:0.1*#2)[rounded corners=0.025*#2]--++(0.3*#2,-0.45*#2)
-		--++(0.4*#2,0)--++(0.2*#2,0.4*#2)--cycle;
+		--++(-0.1*#2,0) arc (90:180:0.1*#2)--++(0,-0.1*#2) arc (180:270:0.2*#2)%--++(0.2*#2,-0.2*#2)
+		arc (180:360:0.4*#2)--cycle;
 }
 \newcommand\CardBlame[1][errorcolor]{% Farbe
 	\CardFrontTikzBase{blame}{%
