@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2026/01/21 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2026/01/30 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.1}
 
@@ -473,13 +473,14 @@
 		\Item Für die aktuelle Lieferung müssen noch #2~Codezeilen zusätzlich geschrieben werden.}%
 }
 \newcommand\hand[3][]{% [tikz options,] size, position
-	\draw[line width=1pt,#1] (#3)++(0.4*#2,0.2*#2)
+	\draw[line width=1pt, #1] (#3)++(0.4*#2,0.15*#2)
 		arc (0:180:0.1*#2)--++(0,0.05*#2)
 		arc (0:180:0.1*#2)--++(0,0.05*#2)
 		arc (0:180:0.1*#2)--++(0,0.35*#2)
 		arc (0:180:0.1*#2)--++(0,-0.5*#2)
-		--++(-0.1*#2,0) arc (90:180:0.1*#2)--++(0,-0.1*#2) arc (180:270:0.2*#2)%--++(0.2*#2,-0.2*#2)
-		arc (180:360:0.4*#2)--cycle;
+		--++(-0.1*#2,-0.1*#2)
+		arc(135:225:0.1*#2)[rounded corners=0.025*#2]--++(0.3*#2,-0.45*#2)
+		--++(0.4*#2,0)--++(0.2*#2,0.4*#2)--cycle;
 }
 \newcommand\CardBlame[1][errorcolor]{% Farbe
 	\CardFrontTikzBase{blame}{%
