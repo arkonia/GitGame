@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2026/01/30 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2026/02/20 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.1}
 
@@ -511,13 +511,13 @@
 		% Mitte
 		\hand[line width=1.5pt,fill=#1]{0.4\cardwidth}{UCenter}
 		% Ecken
-		\path (UL)++(0.035\cardwidth,-0.05\cardwidth) coordinate (ULhand);
-		\path (UR)++(-0.035\cardwidth,-0.05\cardwidth) coordinate (URhand);
+		\path (UL)++(0.05\cardwidth,-0.075\cardwidth) coordinate (ULhand);
+		\path (UR)++(-0.05\cardwidth,-0.075\cardwidth) coordinate (URhand);
 		\hand[fill=#1]{0.125\cardwidth}{ULhand}
 		\hand[fill=#1]{0.125\cardwidth}{URhand}
 	}{%
 	\centerline{\rede{git blame!}}\vskip1ex
-	Du hast herausgefunden, wer für den Fehler verursacht hat.\\
+	Du hast herausgefunden, wer den Fehler verursacht hat.\\
 	\Item Leg einen Marker eines Spielers deiner Wahl auf einen ausliegenden Bug. Dieser Spieler erhält den Wert des Bugs als Minuspunkte bei der Lieferung.}%
 }
 \newcommand\CardCherryPick{%
