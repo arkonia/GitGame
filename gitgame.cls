@@ -251,17 +251,18 @@
 \newcommand\CardMarker[1]{% Zahl
 	\CardFrontTikzBase{}{%
 		\colorlet{markercolor}{\ifcase#1\or errorcolor\or warncolor\or nullcolor\or middlecolor\or highcolor\fi}%
-		\edef\markerletter{\ifcase#1\or A\or B\or C\or D\or E\fi}%
+		\edef\markerletter{\ifcase#1\or A\or D\or G\or K\or L\fi}%
+		\edef\markername{\ifcase#1\or Ada\or Donald\or Günter\or Konrad\or Linus\fi}%
 
 	    % innerster Rahmen
 		\auxdim=\cardborderradius
 		\advance\auxdim by -2.5mm
 		\path (UR)+(-2.5mm,-2.5mm) coordinate (aux);
-		\fill[markercolor!30, draw=black!50, rounded corners=\auxdim] (\cardborder,\cardborder)+(2.5mm,2.5mm) rectangle (aux);
+		\fill[markercolor!30, draw=markercolor, line width=3pt, rounded corners=\auxdim] (\cardborder,\cardborder)+(2.5mm,2.5mm) rectangle (aux);
 		
 		% Überschrift
 		\path (UCenter)+(0,0.225\cardheight) node[anchor=base] {\bigfont{%
-			\ifcase#1\or rot\or orange\or gelb\or grün\or blau\fi%
+			\markername%
 		}};
 		
 		\draw[line width=1.5pt, rounded corners, fill=markercolor] (UCenter)+(90:0.25\cardwidth)
@@ -269,7 +270,7 @@
 			--+(306:0.25\cardwidth)--+(18:0.25\cardwidth)--cycle;
 		\node at (UCenter) {\hugefont{\markerletter}};
 		
-		\path (UCenter)+(0,-0.25\cardheight) node {\textfontsize{Marker für Spieler~\markerletter}};
+		\path (UCenter)+(0,-0.25\cardheight) node {\textfontsize{Marker für Spieler\ifcase#1\or in\fi\ \markername}};
 		}{}%
 }
 \newcommand\CalcNumberColor[1]{% Zahlwert
