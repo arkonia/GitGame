@@ -22,7 +22,7 @@ Dieses Spiel parodiert die agile Software-Entwicklung. Die Spieler bilden dabei 
 
 
 \section{Aufbau}
-Das Spiel besteht aus vier Arten von Karten: Issue-, Commit-, Release- und sonstigen Karten.
+Das Spiel besteht aus drei Arten von Karten mit unterschiedlichen Rückseiten: \bgcolorbox{bgcolor3}{\textrule{Spielermarker}}- und \bgcolorbox{bgcolor1}{\textrule{Issue}}-Karten sowie die eigentlichen \bgcolorbox{bgcolor2}{\textrule{Spielkarten}}.
 
 % TODO: Kleine Dummy-Bilder der 4 Arten
 %[4 Arten]
@@ -30,9 +30,11 @@ Das Spiel besteht aus vier Arten von Karten: Issue-, Commit-, Release- und sonst
 %\CardFrontCommit{3}
 %\CardRelease
 
-Die 9~\bgcolorbox{middlecolor!50}{\textrule{Issue}-Karten} werden am Anfang von den anderen Karten getrennt, gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie gibt das Ziel der ersten Spielrunde an und beginnt die Reihe der ausgelegten Karten, also das \textrule{Remote Repository} von Git.
+Die 9~\bgcolorbox{bgcolor1}{\textrule{Issue}-Karten} werden am Anfang von den anderen Karten getrennt, gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie gibt das Ziel der ersten Spielrunde an und beginnt die Reihe der ausgelegten Karten, also das \textrule{Remote Repository} von Git.
 
-Alle anderen Karten werden auch gut gemischt und bildet den Zugstapel. Jeder Spieler erhält drei davon auf die Hand, die sog.\ Handkarten. Diese entsprechen dem lokalen Git-Arbeitsverzeichnis des Spielers.
+Die \bgcolorbox{bgcolor3}{\textrule{Spielermarker}} werden von den restlichen Karten getrennt und an die jeweiligen Spieler verteilt. ...
+
+Alle anderen Karten werden gut gemischt und bildet den Zugstapel. Jeder Spieler erhält davon drei auf die Hand, die sog.\ Handkarten. Diese entsprechen dem lokalen Git-Arbeitsverzeichnis des Spielers.
 
 
 
@@ -121,65 +123,11 @@ Gewonnen hat in jedem Fall selbstverständlich der Spieler mit der höchsten Ges
 
 \clearpage
 \section{Druckvorlagen}
-Diese und die folgenden Seiten sind zum Ausdrucken und Ausschneiden vorgesehen. Zum Drucken wird dickes Papier empfohlen, mindestens 160\,g-Papier. Die Karten sollten natürlich beidseitig ausgedruckt werden. Die Ränder links und rechts sind gleich breit, so dass Vorder- und Rückseite immer aufeinander treffen. Die Karten sind $\dimenToMM{\cardwidth} \times \dimenToMM{\cardheight}$ groß.
+Die folgenden Seiten sind zum Ausdrucken und Ausschneiden vorgesehen. Zum Drucken wird dickes Papier empfohlen, mindestens 160\,g-Papier. Die Karten sollten natürlich beidseitig ausgedruckt werden. Die Ränder links und rechts sind gleich breit, so dass Vorder- und Rückseite immer aufeinander treffen. Die Karten sind $\dimenToMM{\cardwidth} \times \dimenToMM{\cardheight}$ groß.
 
 Alternativ gibt es auch Dateien, die jeweils nur genau eine Karte je Seite zeigen:\\
 \centerline{\url{gitgame-de_Vorderseiten.pdf} und \url{gitgame-de_Rueckseite.pdf}}
 Diese haben einen zusätzlichen umlaufenden Rand von 3\,mm, die Dateien sind also $\dimenToMM{\cardwidthplus} \times \dimenToMM{\cardheight+6mm}$ groß.
-
-
-\subsection*{Spielermarker}
-Statt der Spielermarker auf dieser Seite können auch irgendwelche Spielfiguren oder sonstige Chips, Münzen o.\,ä.\ zum markieren der ausgelegten Karten verwendet werden.
-
-\begin{center}
-\PlayerMarker{errorcolor}{A}
-\PlayerMarker{errorcolor}{A}
-\PlayerMarker{errorcolor}{A}
-\PlayerMarker{errorcolor}{A}
-\PlayerMarker{errorcolor}{A}
-\PlayerMarker{errorcolor}{A}
-\PlayerMarker{errorcolor}{A}
-
-\PlayerMarker{warncolor}{B}
-\PlayerMarker{warncolor}{B}
-\PlayerMarker{warncolor}{B}
-\PlayerMarker{warncolor}{B}
-\PlayerMarker{warncolor}{B}
-\PlayerMarker{warncolor}{B}
-\PlayerMarker{warncolor}{B}
-
-\PlayerMarker{nullcolor}{C}
-\PlayerMarker{nullcolor}{C}
-\PlayerMarker{nullcolor}{C}
-\PlayerMarker{nullcolor}{C}
-\PlayerMarker{nullcolor}{C}
-\PlayerMarker{nullcolor}{C}
-\PlayerMarker{nullcolor}{C}
-
-\PlayerMarker{middlecolor}{D}
-\PlayerMarker{middlecolor}{D}
-\PlayerMarker{middlecolor}{D}
-\PlayerMarker{middlecolor}{D}
-\PlayerMarker{middlecolor}{D}
-\PlayerMarker{middlecolor}{D}
-\PlayerMarker{middlecolor}{D}
-
-\PlayerMarker{highcolor}{E}
-\PlayerMarker{highcolor}{E}
-\PlayerMarker{highcolor}{E}
-\PlayerMarker{highcolor}{E}
-\PlayerMarker{highcolor}{E}
-\PlayerMarker{highcolor}{E}
-\PlayerMarker{highcolor}{E}
-
-\PlayerMarker{oddcolor}{F}
-\PlayerMarker{oddcolor}{F}
-\PlayerMarker{oddcolor}{F}
-\PlayerMarker{oddcolor}{F}
-\PlayerMarker{oddcolor}{F}
-\PlayerMarker{oddcolor}{F}
-\PlayerMarker{oddcolor}{F}
-\end{center}
 
 
 
