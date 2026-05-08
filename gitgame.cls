@@ -1,6 +1,6 @@
 % !TeX spellcheck = de_DE
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gitgame}[2026/02/20 macros for Git the card game by arkonia]
+\ProvidesClass{gitgame}[2026/05/08 macros for Git the card game by arkonia]
 
 \def\gitgameversion{1.1}
 
@@ -248,11 +248,14 @@
 		\draw[line width=1.5pt, rounded corners, fill=#4] (UCenter)++(-#1,-0.2\cardwidth) rectangle ++(2*#1,0.4\cardwidth);
 		#3}{#5}%
 }
+\newcommand\MarkerName[1]{\ifcase#1\or Ada\or Donald\or Günter\or Konrad\or Linus\fi}
+\newcommand\MarkerLetter[1]{\ifcase#1\or A\or D\or G\or K\or L\fi}
+\newcommand\SetMarkerColor[1]{%
+	\colorlet{markercolor}{\ifcase#1\or errorcolor\or warncolor\or nullcolor\or middlecolor\or highcolor\fi}%
+}
 \newcommand\CardMarker[1]{% Zahl
 	\CardFrontTikzBase{}{%
-		\colorlet{markercolor}{\ifcase#1\or errorcolor\or warncolor\or nullcolor\or middlecolor\or highcolor\fi}%
-		\edef\markerletter{\ifcase#1\or A\or D\or G\or K\or L\fi}%
-		\edef\markername{\ifcase#1\or Ada\or Donald\or Günter\or Konrad\or Linus\fi}%
+		\SetMarkerColor{#1}%
 
 	    % innerster Rahmen
 		\auxdim=\cardborderradius
@@ -262,15 +265,15 @@
 		
 		% Überschrift
 		\path (UCenter)+(0,0.225\cardheight) node[anchor=base] {\bigfont{%
-			\markername%
+			\MarkerName{#1}%
 		}};
 		
 		\draw[line width=1.5pt, rounded corners, fill=markercolor] (UCenter)+(90:0.25\cardwidth)
 			--+(162:0.25\cardwidth)--+(234:0.25\cardwidth)
 			--+(306:0.25\cardwidth)--+(18:0.25\cardwidth)--cycle;
-		\node at (UCenter) {\hugefont{\markerletter}};
+		\node at (UCenter) {\hugefont{\MarkerLetter{#1}}};
 		
-		\path (UCenter)+(0,-0.25\cardheight) node {\textfontsize{Marker für Spieler\ifcase#1\or in\fi\ \markername}};
+		\path (UCenter)+(0,-0.25\cardheight) node {\textfontsize{Marker für Spieler\ifcase#1\or in\fi\ \MarkerName{#1}}};
 		}{}%
 }
 \newcommand\CalcNumberColor[1]{% Zahlwert
