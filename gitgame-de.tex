@@ -30,29 +30,29 @@ Das Spiel besteht aus drei Arten von Karten mit unterschiedlichen Rückseiten: \
 %\CardFrontCommit{3}
 %\CardRelease
 
-Die 9~\bgcolorbox{bgcolor1}{\textrule{Issue}-Karten} werden am Anfang von den anderen Karten getrennt, gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie gibt das Ziel der ersten Spielrunde an und beginnt die Reihe der ausgelegten Karten, also das \textrule{Remote Repository} von Git.
+Die 9~Issue-Karten werden am Anfang von den anderen Karten getrennt, gut gemischt und bilden den Issue-Stapel. Eine Issue-Karte wird gezogen und aufgedeckt. Sie gibt das Ziel der ersten Spielrunde an und beginnt die Reihe der ausgelegten Karten, also das \textrule{Remote Repository} von Git.
 
-Die \bgcolorbox{bgcolor3}{\textrule{Spielermarker}} werden von den restlichen Karten getrennt und an die jeweiligen Spieler verteilt. ...
+Die Spielermarker werden von den restlichen Karten getrennt und an die jeweiligen Spieler verteilt.
 
 Alle anderen Karten werden gut gemischt und bildet den Zugstapel. Jeder Spieler erhält davon drei auf die Hand, die sog.\ Handkarten. Diese entsprechen dem lokalen Git-Arbeitsverzeichnis des Spielers.
 
 
 
 \section{Ablauf}
-Das Spiel wird in Runden gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Sie beginnen mit dem Aufdecken einer \bgcolorbox{middlecolor!50}{\textrule{Issue}-Karte}, die das Punkteziel der Runde angibt, und enden mit der Auslieferung einer neuen Version der Software durch das Ausspielen einer \bgcolorbox{highcolor!50}{\textrule{Release}-Karte}. Dazwischen spielen alle Spieler reihum immer genau eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht.
+Das Spiel wird in Runden, sog.\ Sprints, gespielt, die jeweils der Entwicklung einer Version der Software entsprechen. Sie beginnen mit dem Aufdecken einer \textrule{Issue}-Karte, die das Punkteziel des Sprints angibt, und enden mit der Auslieferung einer neuen Version der Software durch das Ausspielen einer \textrule{Release}-Karte. Dazwischen spielen alle Spieler reihum immer genau eine Handkarte aus und sagen dabei das, was auf der Karte in Anführungszeichen~(\rede{.\,.\,.}) steht. Wenn die Karte am Remote Repository angelegt wird und Punkte einbringt (große Zahl in einem Kreis), dann muss sie mit einer Spielermarker-Karte markiert werden. In jedem Fall muss die zusätzliche Beschreibung auf der Karte ausgeführt werden, falls vorhanden.
 
-Es gibt drei Arten von Handkarten:
-\begin{itemize}
-	\item \bgcolorbox{nullcolor!50}{\textrule{Commit}-Karten} zeigen einen Kreis mit einem Zahlwert, der einer Anzahl geänderter Codezeilen entspricht. Sie werden an das Remote Repository angelegt und müssen dann mit einem Spielermarker markiert werden, damit man später weiß, wer welche Punkte bekommt.
-	\item \bgcolorbox{highcolor!50}{\textrule{Release}-Karten} beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.~\ref{auswerten}). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist, d.\,h.\ wenn die Summe der ausgelegten Zahlwerte dem Wert der Issue-Karte (incl.\ Bugs) entspricht oder diesen übertrifft.
-	\item \bgcolorbox{warncolor!50}{Sonstige Karten} werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
-\end{itemize}
+%Es gibt drei Arten von Handkarten:
+%\begin{itemize}
+%	\item \bgcolorbox{nullcolor!50}{\textrule{Commit}-Karten} zeigen einen Kreis mit einem Zahlwert, der einer Anzahl geänderter Codezeilen entspricht. Sie werden an das Remote Repository angelegt und müssen dann mit einem Spielermarker markiert werden, damit man später weiß, wer welche Punkte bekommt.
+%	\item \bgcolorbox{highcolor!50}{\textrule{Release}-Karten} beenden die aktuelle Runde, die dann \textrule{ausgewertet} wird~(s.\,u.~\ref{auswerten}). Sie können nur ausgespielt werden, wenn das aktuelle Ziel erreicht ist, d.\,h.\ wenn die Summe der ausgelegten Zahlwerte dem Wert der Issue-Karte (incl.\ Bugs) entspricht oder diesen übertrifft.
+%	\item \bgcolorbox{warncolor!50}{Sonstige Karten} werden entsprechend ihrer Aufschrift ausgewertet und landen danach meistens auf dem Abwurfstapel.
+%\end{itemize}
 
-Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand an die Reihe kommt und keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel. Er spielt in dieser Runde also keine Karte aus.
+Bestimmte Karten dürfen nur unter bestimmen Bedingungen ausgespielt werden. Falls jemand an die Reihe kommt und keine seiner Handkarten ausspielen kann, legt er sie alle auf den Abwurfstapel und zieht drei neue. Er spielt in dieser Runde also keine Karte aus.
 
 Am Ende des Zuges \textrule{stockt} man seine Handkarten wieder auf~(s.\,u.~\ref{aufstocken}) und dann ist der nächste Spieler an der Reihe.
 
-Eine Spielrunde ist beendet, sobald jemand eine Release-Karte ausspielt. Dann wird die aktuelle Runde \textrule{ausgewertet}~(s.\,u.~\ref{auswerten}) und danach beginnt die nächste Spielrunde mit dem Aufdecken der nächsten Issue-Karte oder das Spiel ist ganz beendet~(s.\,u.~\ref{ende}).
+Ein Sprint ist beendet, sobald jemand eine Release-Karte ausspielt. Dann wird die aktuelle Runde \textrule{ausgewertet}~(s.\,u.~\ref{auswerten}) und danach beginnt der nächste Sprint mit dem Aufdecken der nächsten Issue-Karte oder das Spiel ist ganz beendet~(s.\,u.~\ref{ende}).
 
 
 \subsection{Aufstocken\label{aufstocken}}
@@ -60,13 +60,13 @@ Falls man am Ende seines Zuges weniger als drei Handkarten hat, zieht man neue K
 
 
 \subsection{Auswerten\label{auswerten}}
-Sobald jemand eine Release-Karte ausspielt, wird eine neue Version der Software geliefert. D.\,h.\ die aktuelle Runde wird ausgewertet. Jeder Spieler erhält Punkte entsprechend der Codezeilen all seiner Commits im Remote Repository, also zwischen Issue und Lieferung. Der Spieler der Release-Karte erhält zusätzliche Punkte wie auf der Issue-Karte angegeben.
+Sobald jemand eine Release-Karte ausspielt, wird eine neue Version der Software geliefert. D.\,h.\ der aktuelle Sprint wird ausgewertet. Jeder Spieler erhält Punkte entsprechend der Codezeilen all seiner Commits im Remote Repository, also zwischen Issue und Lieferung. Der Spieler der Release-Karte erhält zusätzliche Punkte wie auf der Issue-Karte angegeben.
 
-Nach der Auswertung werden alle ausgelegten Karten und alle Handkarten abgeworfen. Jetzt können die Karten neu gemischt werden. Danach wird eine neue Issue-Karte ausgelegt und jeder Spieler erhält wieder drei Handkarten. Der Spieler nach dem Spieler, der die Release-Karte ausgespielt hat, beginnt die neue Runde.
+Nach der Auswertung werden alle ausgelegten Karten und alle Handkarten abgeworfen. Jetzt können die Karten neu gemischt werden. Danach wird eine neue Issue-Karte ausgelegt und jeder Spieler erhält wieder drei Handkarten. Der Spieler nach dem Spieler, der die Release-Karte ausgespielt hat, beginnt dann den neuen Sprint.
 
 
 \subsubsection*{Beispiel für eine Auswertung}
-Am Ende einer Spielrunde kann das Remote Repository folgendermaßen aussehen:
+Am Ende eines Sprints kann das Remote Repository z.\,B. folgendermaßen aussehen:
 
 \begin{center}
 \scalebox{0.45}{
@@ -115,7 +115,7 @@ Die Punkte sollten in einer kleinen Tabelle aufgeschrieben werden:
 
 
 \section{Ende\label{ende}}
-Am Anfang sollten alle Teilnehmer festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spieler mindestens 100~Punkte erreicht hat.
+Am Anfang sollten alle Teilnehmer gemeinsam festlegen, wann das Spiel beendet ist (Definition of Done), z.\,B. nach 5~Lieferungen oder sobald ein Spieler mindestens 100~Punkte erreicht hat.
 
 Gewonnen hat in jedem Fall selbstverständlich der Spieler mit der höchsten Gesamtpunktezahl.
 
