@@ -66,42 +66,45 @@ Nach der Auswertung werden alle ausgelegten Karten und alle Handkarten abgeworfe
 
 
 \subsubsection*{Beispiel für eine Auswertung}
-Am Ende eines Sprints kann das Remote Repository z.\,B. folgendermaßen aussehen:
+Am Ende eines (recht kurzen) Sprints kann das Remote Repository z.\,B. folgendermaßen aussehen:
 
 \begin{center}
 \scalebox{0.45}{
-\CardIssue{12}
-\hskip1em
-\CardFrontCommit{5}
-\hskip-0.4\cardwidth
-\clap{\raisebox{-0.05\cardwidth}{\PlayerMarkerWithShadow{errorcolor}{A}}}
-\hskip0.4\cardwidth
-\hskip1em
+\CardIssue{12}%
+\unskip\hskip0.1\cardwidth
 \cardnum=0
-\CardFrontCommit{7}
+\CardFrontCommit{5}%
+\hskip-0.95\cardwidth
+\cardnum=0
+\raisebox{-0.6\cardheight}{\CardMarker{1}}
+\unskip\hskip0.1\cardwidth
+\cardnum=0
+\CardFrontCommit{7}%
 \hskip-0.8\cardwidth
 \raisebox{-0.05\cardwidth}{\CardMergeConflict{3}}
-\hskip-0.65\cardwidth
-\clap{\raisebox{0.05\cardwidth}{\PlayerMarkerWithShadow{nullcolor}{C}}}
-\hskip0.65\cardwidth
-\hskip1em
+\hskip-1.1\cardwidth
+\cardnum=0
+\raisebox{-0.65\cardheight}{\CardMarker{3}}
+\unskip\hskip0.2\cardwidth
 \cardnum=0
 \CardRelease
-\hskip-0.6\cardwidth
-\clap{\raisebox{-0.1\cardwidth}{\PlayerMarkerWithShadow{errorcolor}{A}}}
+\hskip-0.9\cardwidth
+\cardnum=0
+\raisebox{-0.63\cardheight}{\CardMarker{1}}
 }
 \end{center}
 
 \begin{itemize}
-	\item Spieler~A erhält 11~Punkte: Zahlkarte~5 plus 6~Extrapunkte fürs Release.
-	\item Spieler~B erhält 0~Punkte: Seine Zahlkarte~7 wurde von Spieler~C geklaut!
-	\item Spieler~C erhält 10~Punkte: Zahlkarte~7 und Zahlkarte~3 (Merge Conflict).
+	\item Spieler~\MarkerLetter{1} erhält 11~Punkte: Zahlkarte~5 plus 6~Extrapunkte fürs Release.
+	\item Spieler~\MarkerLetter{2} erhält 0~Punkte: Seine Zahlkarte~7 wurde von Spieler~\MarkerLetter{3} geklaut (Merge Conflict)!
+	\item Spieler~\MarkerLetter{3} erhält 10~Punkte: Zahlkarte~7 und Zahlkarte~3.
 \end{itemize}
 
-Die Punkte sollten in einer kleinen Tabelle aufgeschrieben werden:
+\medskip
 
-\begin{center}
-\begin{tabular}{c|c|c|c}
+Die Punkte können dann in einer kleinen Tabelle aufgeschrieben werden:
+\hfill
+\begin{tabular}[t]{c|c|c|c}
 	Runde & A & B & C \\
 	\hline
 	v.\,1 & 11 & 0 & 10 \\
@@ -110,7 +113,6 @@ Die Punkte sollten in einer kleinen Tabelle aufgeschrieben werden:
 	\hline
 	v.\,3 &  & & \\
 \end{tabular}
-\end{center}
 
 
 
